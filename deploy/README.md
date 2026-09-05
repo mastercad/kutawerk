@@ -32,7 +32,7 @@ an `127.0.0.1:8098`; HTTPS endet am zentralen nginx.
 
 ## Ablauf
 
-Ein Push auf `main` startet nacheinander:
+Ein Push auf `master` startet nacheinander:
 
 1. `Quality Assurance`
 2. `Build & Push Docker Images`

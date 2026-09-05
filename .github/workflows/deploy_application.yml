@@ -9,7 +9,7 @@ on:
   workflow_run:
     workflows: ["Build & Push Docker Images"]
     types: [completed]
-    branches: [main]
+    branches: [master]
   workflow_dispatch:
     inputs:
       image_tag:
@@ -49,9 +49,9 @@ jobs:
               git clone "https://github.com/${REPO}.git" "${DEPLOY_PATH}"
             fi
             cd "${DEPLOY_PATH}"
-            git fetch origin main
-            git checkout main
-            git pull --ff-only origin main
+            git fetch origin master
+            git checkout master
+            git pull --ff-only origin master
 
             umask 077
             {
