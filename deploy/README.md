@@ -10,7 +10,6 @@ die Container. Auf dem Server wird kein Git-Repository angelegt.
 - `DEPLOY_SSH_USER`: SSH-Benutzer
 - `DEPLOY_SSH_KEY`: privater SSH-Schlüssel
 - `DEPLOY_SSH_PORT`: SSH-Port, normalerweise `22`
-- `DEPLOY_PATH`: Zielverzeichnis, beispielsweise `/opt/kutawerk`
 - `APP_SECRET`: mindestens 32 zufällige Zeichen
 - `MYSQL_PASSWORD`: URL-sicheres Passwort für den Anwendungsbenutzer
 - `MYSQL_ROOT_PASSWORD`: separates URL-sicheres Root-Passwort
@@ -27,8 +26,11 @@ die Container. Auf dem Server wird kein Git-Repository angelegt.
 4. Sicherstellen, dass Port `8098` auf dem Server noch nicht lokal belegt ist.
 5. Die genannten GitHub-Secrets hinterlegen.
 
-Der Anwendungscontainer ist nicht direkt öffentlich erreichbar. Er bindet nur
-an `127.0.0.1:8098`; HTTPS endet am zentralen nginx.
+Die Compose-Datei wird pro Deployment in ein temporäres Verzeichnis übertragen
+und anschließend entfernt. Der feste Compose-Projektname `kutawerk` erhält die
+Datenbank- und Upload-Volumes dauerhaft. Der Anwendungscontainer ist nicht
+direkt öffentlich erreichbar. Er bindet nur an `127.0.0.1:8098`; HTTPS endet am
+zentralen nginx.
 
 ## Ablauf
 
