@@ -28,10 +28,18 @@ services:
       DEFAULT_URI: "${KUTAWERK_DEFAULT_URI:-https://kutawerk.byte-artist.de}"
       MAILER_DSN: "${MAILER_DSN:-null://null}"
       MAILER_FROM: "${MAILER_FROM:-info@kutawerk.de}"
-    command: sh -c "php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration && php bin/console app:content:import-legacy --no-interaction"
+    command: sh -c "php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration && php bin/console app:data:initialize --no-interaction"
     depends_on:
       database:
         condition: service_healthy
+    restart: "no"
+
+  uploads-init:
+    image: ${PHP_IMAGE:-ghcr.io/byte-artist/kutawerk-php}:${IMAGE_TAG:-latest}
+    user: root
+    command: sh -c "mkdir -p /app/public/uploads/news /app/public/uploads/trainers /app/public/uploads/documents && chown -R www-data:www-data /app/public/uploads"
+    volumes:
+      - uploads_data:/app/public/uploads
     restart: "no"
 
   php:
@@ -42,6 +50,8 @@ services:
     depends_on:
       database:
         condition: service_healthy
+      uploads-init:
+        condition: service_completed_successfully
     volumes:
       - uploads_data:/app/public/uploads
     healthcheck:

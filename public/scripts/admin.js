@@ -238,15 +238,24 @@ function updateToolbarState(editor) {
 document.addEventListener('selectionchange',()=>{const anchor=getSelection()?.anchorNode;if(!anchor)return;document.querySelectorAll('[data-rich-editor]').forEach((editor)=>{if(editor.contains(anchor))updateToolbarState(editor);});});
 document.querySelectorAll('[data-rich-editor]').forEach((editor)=>{editor.addEventListener('keyup',()=>updateToolbarState(editor));editor.addEventListener('mouseup',()=>updateToolbarState(editor));});
 
-document.querySelectorAll('input[type="file"][name="image"]').forEach((input) => {
-    input.addEventListener('change', () => {
-        const file = input.files?.[0];
-        const preview = input.closest('form').querySelector('[data-image-preview]');
-        if (!file || !preview) return;
-        preview.querySelector('img').src = URL.createObjectURL(file);
-        preview.querySelector('img').hidden = false;
-        preview.querySelector('[data-image-empty]').hidden = true;
+document.addEventListener('change', (event) => {
+    const input = event.target.closest('input[type="file"][name="image"], input[type="file"][name="trainer_image"]');
+    if (!input) return;
+    const file = input.files?.[0];
+    const form = input.closest('form');
+    const preview = form?.querySelector('[data-image-preview]');
+    const status = input.closest('[data-file-drop]')?.querySelector('[data-upload-status]');
+    if (!file || !preview) return;
+    const image = preview.querySelector('img');
+    const empty = preview.querySelector('[data-image-empty]');
+    const reader = new FileReader();
+    reader.addEventListener('load', () => {
+        image.src = String(reader.result);
+        image.hidden = false;
+        if (empty) empty.hidden = true;
+        if (status) status.textContent = `${file.name} · ${(file.size / 1024 / 1024).toFixed(1)} MB ausgewählt`;
     });
+    reader.readAsDataURL(file);
 });
 
 document.querySelectorAll('input[type="file"][name="gallery_images[]"]').forEach((input) => {

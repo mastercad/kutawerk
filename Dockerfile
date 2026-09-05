@@ -7,6 +7,7 @@ RUN composer install --no-dev --no-scripts --no-interaction --prefer-dist --opti
 FROM php:8.4-fpm-alpine AS php
 
 RUN docker-php-ext-install -j$(nproc) pdo_mysql opcache
+RUN printf 'upload_max_filesize=5M\npost_max_size=6M\n' > /usr/local/etc/php/conf.d/uploads.ini
 
 WORKDIR /app
 COPY --from=vendor /app/vendor ./vendor

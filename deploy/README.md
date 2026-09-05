@@ -38,6 +38,6 @@ Ein Push auf `master` startet nacheinander:
 2. `Build & Push Docker Images`
 3. `Deploy Application`
 
-Vor jedem Anwendungsstart werden Datenbankmigrationen und der idempotente
-Initialimport ausgeführt. Datenbank und Uploads liegen in persistenten
-Docker-Volumes.
+Vor jedem Anwendungsstart werden Datenbankmigrationen und die idempotente
+Initialisierung aus `resources/initial-data.sql` ausgeführt. Datenbank und
+Uploads liegen in persistenten Docker-Volumes.

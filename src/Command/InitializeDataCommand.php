@@ -13,10 +13,10 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 #[AsCommand(
-    name: 'app:content:import-legacy',
-    description: 'Imports the versioned KuTaWerk initial data without overwriting existing records.',
+    name: 'app:data:initialize',
+    description: 'Imports the versioned KuTaWerk initial data and completes missing seed fields.',
 )]
-final class ImportLegacyContentCommand extends Command
+final class InitializeDataCommand extends Command
 {
     public function __construct(
         private readonly Connection $connection,
@@ -53,7 +53,7 @@ final class ImportLegacyContentCommand extends Command
         }
 
         $io->success(sprintf(
-            'Initial data import completed. %d new records were inserted; existing records were left unchanged.',
+            'Initial data import completed. %d records were inserted or completed.',
             $imported,
         ));
 

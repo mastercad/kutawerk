@@ -11,7 +11,7 @@ final class Version20260905000000 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return 'Initiales KuTaWerk-Schema einschließlich der grundlegenden Bereiche, Ansprechpartner und Dokumente.';
+        return 'Initiales KuTaWerk-Datenbankschema.';
     }
 
     public function up(Schema $schema): void
@@ -45,29 +45,6 @@ final class Version20260905000000 extends AbstractMigration
         $this->addSql('ALTER TABLE news_posts ADD CONSTRAINT FK_F2E23DA4F675F31B FOREIGN KEY (author_id) REFERENCES users (id)');
         $this->addSql('ALTER TABLE news_gallery_images ADD CONSTRAINT FK_DD7655014B89032C FOREIGN KEY (post_id) REFERENCES news_posts (id) ON DELETE CASCADE');
 
-        $this->addSql("INSERT INTO departments (slug, name, active) VALUES ('dance', 'Tanz', 1), ('culture', 'Kultur', 1), ('technology', 'Technik', 1), ('kuta-lounge', 'KuTa Lounge', 1)");
-
-        $contacts = [
-            ['tanzsparte@kutawerk.de', 'Beatrice', 'Peana', 1, null, 'Ansprechpartner Tanzsparte', 'dance'],
-            ['mager@kutawerk.de', 'Thorsten', 'Mager', 0, '/media/i9385343a4ebc08b7.jpg', 'Leiter Kultursparte', 'culture'],
-            ['jonas@kutawerk.de', 'Uwe', 'Jonas', 0, '/media/i348db21cc8acb07e.jpg', 'Leiter Event- und Techniksparte', 'technology'],
-            ['lounge@kutawerk.de', 'Emma', '', 0, '/media/i6be93c64609a0481.png', 'Koordination & Ansprechpartner KuTa Lounge', 'kuta-lounge'],
-        ];
-        foreach ($contacts as [$email, $firstName, $lastName, $trainer, $image, $function, $department]) {
-            $this->addSql('INSERT INTO users (email, first_name, last_name, roles, permissions, password, active, trainer, trainer_image_path, trainer_bio, contact_function, contact_person, access_from, access_until) VALUES (?, ?, ?, ?, ?, NULL, 1, ?, ?, NULL, ?, 1, NULL, NULL)', [$email, $firstName, $lastName, '[]', '[]', $trainer, $image, $function]);
-            $this->addSql('INSERT INTO user_departments (user_id, department_id) SELECT u.id, d.id FROM users u CROSS JOIN departments d WHERE u.email = ? AND d.slug = ?', [$email, $department]);
-        }
-
-        $documents = [
-            ['association_statutes', '/downloads/8300398115-vereinssatzung.pdf', 'vereinssatzung.pdf', 375120],
-            ['lounge_contract', '/downloads/8298657515-Mietvertrag-KuTa-Lounge-2023.pdf', 'Mietvertrag KuTa Lounge 2023.pdf', 168415],
-            ['membership_application', '/downloads/8300399715-2024-09-27_Kuta-Mitgliedsantrag.pdf', '2024-09-27_Kuta Mitgliedsantrag.pdf', 134308],
-            ['garde_application', '/downloads/8597501115-AntragMitgliedGardetanz2020.pdf', 'AntragMitgliedGardetanz2020.pdf', 222134],
-            ['dance_contributions', '/downloads/8300399615-Beitragsordnung-2020-91-.pdf', 'Beitragsordnung 2020[91].pdf', 448296],
-        ];
-        foreach ($documents as [$key, $path, $name, $size]) {
-            $this->addSql('INSERT INTO document_versions (document_key, stored_path, original_name, mime_type, file_size, valid_from, valid_until, created_at) VALUES (?, ?, ?, ?, ?, NULL, NULL, NOW())', [$key, $path, $name, 'application/pdf', $size]);
-        }
     }
 
     public function down(Schema $schema): void
