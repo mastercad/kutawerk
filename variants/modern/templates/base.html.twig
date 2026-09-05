@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Kultur- und Tanzwerkstatt e.V. in Freital – Tanz, Kultur, Veranstaltungstechnik und KuTa Lounge.">
+    <title>{% block title %}KuTaWerk Freital{% endblock %}</title>
+    <link rel="stylesheet" href="{{ asset('styles/app.css') }}">
+    <script src="{{ asset('scripts/app.js') }}" defer></script>
+</head>
+<body>
+    <a class="skip-link" href="#main">Zum Inhalt</a>
+    <header class="site-header">
+        <a class="brand" href="{{ path('site_home') }}" aria-label="KuTaWerk Startseite"><span class="brand-mark">KuTa</span><span>Werk</span></a>
+        <button class="menu-button" type="button" aria-expanded="false" aria-controls="main-navigation">Menü</button>
+        <nav id="main-navigation" class="main-navigation" aria-label="Hauptnavigation">
+            <a href="{{ path('site_events') }}">Veranstaltungen</a><a href="{{ path('site_page', {path: 'bereiche/tanz'}) }}">Tanz</a><a href="{{ path('site_page', {path: 'bereiche/kultur'}) }}">Kultur</a><a href="{{ path('site_page', {path: 'bereiche/technik'}) }}">Technik</a><a href="{{ path('site_page', {path: 'bereiche/kuta-lounge'}) }}">KuTa Lounge</a><a href="{{ path('site_page', {path: 'kontakt'}) }}">Kontakt</a>
+        </nav>
+    </header>
+    <main id="main">{% block body %}{% endblock %}</main>
+    <footer class="site-footer"><div><strong>Kultur- und Tanzwerkstatt e.V.</strong><br>Dresdner Straße 357 · 01705 Freital<br><a href="mailto:info@kutawerk.de">info@kutawerk.de</a></div><nav aria-label="Fußnavigation"><a href="{{ path('site_page', {path: 'ueber-uns'}) }}">Über uns</a><a href="{{ path('site_page', {path: 'ueber-uns/downloads'}) }}">Downloads</a><a href="{{ path('site_page', {path: 'impressum'}) }}">Impressum</a><a href="{{ path('admin_login') }}">Redaktion</a></nav></footer>
+</body>
+</html>

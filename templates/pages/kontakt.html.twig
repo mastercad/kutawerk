@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+{% block title %}Kontakt · KuTaWerk{% endblock %}
+{% block stylesheets %}<link rel="stylesheet" href="{{ asset('styles/contact.css') }}?v=20260905-1">{% endblock %}
+{% set sections = [
+    {slug: 'culture', label: 'Kultursparte', route: 'contact_culture'},
+    {slug: 'dance', label: 'Tanzsparte', route: 'contact_dance'},
+    {slug: 'technology', label: 'Techniksparte', route: 'contact_technology'},
+    {slug: 'kuta-lounge', label: 'KuTa Lounge', route: 'contact_lounge'}
+] %}
+{% block body %}
+<section class="contact-overview">
+    <h1>Kontakt</h1>
+    <p class="contact-intro">Bitte wähle aus, wen Du kontaktieren möchtest!</p>
+    <div class="contact-options">
+        {% for section in sections %}
+            <div class="contact-option">
+                {% if contacts[section.slug] is defined and contacts[section.slug] is not empty %}
+                    {% for person in contacts[section.slug] %}{% include 'pages/_contact-card.html.twig' with {person: person, linked: true} only %}{% endfor %}
+                {% else %}
+                    <article class="contact-person-card contact-section-fallback"><h2>{{ section.label }}</h2><a class="action-link" href="{{ path(section.route) }}">{{ section.label }}</a></article>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+    <div class="contact-location">
+        <section class="contact-address">
+            <h2>Anschrift</h2>
+            <p>Kultur- und Tanzwerkstatt e.V.<br>Dresdner Straße 357<br>01705 Freital</p>
+            <h2>E-Mail</h2>
+            <p><a href="mailto:info@kutawerk.de">info@kutawerk.de</a></p>
+        </section>
+        <div class="contact-map-shell" data-external-media aria-busy="true">
+            <div class="external-media-placeholder"><p>Google Maps wird erst geladen, wenn du externe Medien erlaubst.</p><button class="action-link" type="button" data-cookie-settings>Cookie-Einstellungen</button></div>
+            <div class="contact-map-loading" role="status"><span aria-hidden="true"></span>Karte wird geladen …</div>
+            <iframe class="contact-map" title="Kultur- und Tanzwerkstatt e.V. auf Google Maps" data-consent-src="https://www.google.com/maps/embed/v1/place?key=AIzaSyASzqnCrYBWXhFtdlXXBg_KCLxQTa1I5Y4&amp;q=Kultur-+und+Tanzwerkstatt&amp;maptype=roadmap" width="792" height="217" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen hidden></iframe>
+        </div>
+    </div>
+</section>
+{% endblock %}

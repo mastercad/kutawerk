@@ -1,0 +1,4 @@
+<?php
+declare(strict_types=1); namespace App\Controller;
+use App\Repository\TrainingSessionRepository; use Dompdf\Dompdf; use Dompdf\Options; use Symfony\Bundle\FrameworkBundle\Controller\AbstractController; use Symfony\Component\HttpFoundation\Response; use Symfony\Component\Routing\Attribute\Route;
+final class TrainingScheduleController extends AbstractController {#[Route('/areas/dance/schedule.pdf',name:'dance_schedule_pdf',methods:['GET'])] public function pdf(TrainingSessionRepository $repo):Response{$html=$this->renderView('training/schedule.pdf.twig',['sessions'=>$repo->findOverview()]);$options=new Options();$options->set('defaultFont','DejaVu Sans');$pdf=new Dompdf($options);$pdf->loadHtml($html,'UTF-8');$pdf->setPaper('A4','landscape');$pdf->render();return new Response($pdf->output(),200,['Content-Type'=>'application/pdf','Content-Disposition'=>'inline; filename="kutawerk-training-schedule.pdf"']);}}

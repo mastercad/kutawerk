@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+{% block title %}Termine · Tanz · KuTaWerk{% endblock %}
+{% block stylesheets %}<link rel="stylesheet" href="{{ asset('styles/public-content.css') }}?v=20260904-1">{% endblock %}
+{% block body %}
+<section class="public-overview">
+    <header class="public-heading"><h1>Termine</h1><p>Alle bevorstehenden Termine und Veranstaltungen der Tanzsparte.</p></header>
+    <section class="public-event-section" aria-labelledby="upcoming-events-title">
+    <h2 id="upcoming-events-title" class="public-section-title">Kommende Termine</h2>
+    <div class="public-event-list">
+        {% for event in events %}
+            <article class="public-event">
+                <time datetime="{{ event.date|date('Y-m-d') }}"><strong>{{ event.date|date('d') }}</strong><span>{{ event.date|date('m.Y') }}</span></time>
+                <div><p class="public-event-meta">{% if event.time %}{{ event.time|date('H:i') }} Uhr{% endif %}{% if event.location %}{% if event.time %} · {% endif %}{{ event.location }}{% endif %}</p><h2>{{ event.title }}</h2>{% if event.course %}<p class="public-event-course">{{ event.course.name }}</p>{% endif %}{% if event.description %}<p>{{ event.description }}</p>{% endif %}{% if event.link %}<p><a href="{{ event.link }}">Mehr erfahren →</a></p>{% endif %}</div>
+            </article>
+        {% else %}
+            <div class="public-empty"><h2>Derzeit keine kommenden Termine</h2><p>Neue Termine der Tanzsparte werden hier automatisch veröffentlicht, sobald sie von den Verantwortlichen eingetragen wurden.</p></div>
+        {% endfor %}
+    </div>
+    </section>
+    {% if pastEvents %}<section class="public-event-section public-event-archive" aria-labelledby="past-events-title">
+        <header class="public-archive-heading"><div><p>Rückblick</p><h2 id="past-events-title">Vergangene Termine</h2></div><p>Bereits stattgefundene Veranstaltungen bleiben hier nachvollziehbar.</p></header>
+        <div class="public-event-list">
+            {% for event in pastEvents %}
+                <article class="public-event public-event-past">
+                    <time datetime="{{ event.date|date('Y-m-d') }}"><strong>{{ event.date|date('d') }}</strong><span>{{ event.date|date('m.Y') }}</span></time>
+                    <div><p class="public-event-meta">Vergangen{% if event.time %} · {{ event.time|date('H:i') }} Uhr{% endif %}{% if event.location %} · {{ event.location }}{% endif %}</p><h2>{{ event.title }}</h2>{% if event.course %}<p class="public-event-course">{{ event.course.name }}</p>{% endif %}{% if event.description %}<p>{{ event.description }}</p>{% endif %}{% if event.link %}<p><a href="{{ event.link }}">Mehr erfahren →</a></p>{% endif %}</div>
+                </article>
+            {% endfor %}
+        </div>
+    </section>{% endif %}
+</section>
+{% endblock %}

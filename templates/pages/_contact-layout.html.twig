@@ -1,0 +1,12 @@
+<div class="contact-layout">
+    <div class="contact-portrait">
+        <img src="{{ asset(person.trainerImagePath ?: 'media/trainer-placeholder.svg') }}" alt="{{ person.displayName }}">
+        <p>{% if person.contactFunction %}<strong class="contact-function">{{ person.contactFunction }}</strong><br>{% endif %}<strong>{{ person.displayName }}</strong></p>
+        {% if person.email %}<p><a href="mailto:{{ person.email }}">{{ person.email }}</a></p>{% endif %}
+    </div>
+    <div class="contact-message">
+        {% for message in app.flashes('contact_success') %}<p class="contact-success" role="status">{{ message }}</p>{% endfor %}
+        {% for message in app.flashes('contact_error') %}<p class="contact-error" role="alert">{{ message }}</p>{% endfor %}
+        {% include 'pages/_contact-form.html.twig' %}
+    </div>
+</div>

@@ -1,0 +1,135 @@
+.site-content:has(.home-content) {
+    width: min(1080px, calc(100% - 40px));
+}
+
+.home-content > div > .content-heading h3 {
+    margin: 0;
+    color: #00a2d8;
+    font-size: 28px;
+    font-weight: 400;
+    line-height: 1.25;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.home-content > div > .formatted-text {
+    margin-top: 4px;
+}
+
+.home-content > div > .formatted-text p {
+    margin: 0;
+    text-align: center !important;
+}
+
+.home-news-action {
+    margin-top: 22px;
+}
+
+.home-events-heading {
+    margin-top: 16px;
+}
+
+.home-content .image-gallery {
+    margin-top: 0;
+}
+
+.home-content [data-home-carousel] > ul {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    margin: 0;
+    margin-inline: auto;
+    padding: 0;
+    list-style: none;
+}
+
+.home-content [data-home-carousel] > ul > li {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    display: block;
+    width: 100%;
+    opacity: 0;
+    transform: translate3d(100%, 0, 0);
+    pointer-events: none;
+}
+
+.home-content [data-home-carousel].carousel-ready > ul > li {
+    transition: opacity 1.1s ease, transform 1.1s cubic-bezier(.45, 0, .2, 1);
+}
+
+.home-content [data-home-carousel] > ul > li.is-before {
+    transform: translate3d(-100%, 0, 0);
+}
+
+.home-content [data-home-carousel] > ul > li.active {
+    position: relative;
+    z-index: 1;
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    pointer-events: auto;
+}
+
+.home-content [data-home-carousel] > ul > li img {
+    display: block;
+    width: auto;
+    max-width: 100%;
+    max-height: 85vh;
+    margin: 0 auto;
+    object-fit: contain;
+}
+
+.home-content [data-home-carousel] > ul > li > a {
+    display: block;
+    width: 100%;
+}
+
+.home-content .gallery-thumbnails {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.home-content .gallery-thumbnails a {
+    display: block;
+    padding: 0;
+    border: 2px solid transparent;
+    opacity: .38;
+    filter: grayscale(1);
+    transition: opacity .2s ease, filter .2s ease, border-color .2s ease;
+}
+
+.home-content .gallery-thumbnails a:hover,
+.home-content .gallery-thumbnails a:focus-visible {
+    opacity: .7;
+}
+
+.home-content .gallery-thumbnails a.active {
+    border-color: #00a2d8;
+    opacity: 1;
+    filter: none;
+}
+
+.home-content .gallery-thumbnails img {
+    display: block;
+    width: 25px;
+    height: 25px;
+    object-fit: cover;
+}
+
+.home-instagram-feed {
+    margin-top: 28px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .home-content [data-home-carousel] > ul > li {
+        transition: none;
+    }
+}
+
+@media (max-width: 800px) {
+    .home-content > div > .formatted-text {
+        margin-top: 24px;
+    }
+}

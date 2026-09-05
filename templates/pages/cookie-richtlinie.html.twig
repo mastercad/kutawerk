@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+{% set page_title = 'Cookie-Richtlinie' %}
+{% block title %}{{ page_title }} · KuTaWerk{% endblock %}
+{% block body %}
+<section class="legal-page">
+    <h1>Cookie-Richtlinie</h1>
+    <h2>Erforderliche Speicherung</h2>
+    <p>Die Website speichert deine Auswahl zu externen Medien lokal im Browser. Dadurch bleibt deine Entscheidung beim nächsten Seitenaufruf erhalten. Für geschützte Formulare und den Redaktionszugang können technisch erforderliche Sitzungsdaten verarbeitet werden.</p>
+    <h2>Externe Medien</h2>
+    <p>Google Maps und der Instagram-Inhalt von POWR werden erst geladen, wenn du externe Medien erlaubst. Beim Laden stellt dein Browser eine direkte Verbindung zum jeweiligen Anbieter her. Dabei können diese Anbieter eigene Cookies setzen und technische Verbindungsdaten verarbeiten.</p>
+    <p>Weitere Informationen: <a href="https://policies.google.com/privacy?hl=de" target="_blank" rel="noopener noreferrer">Datenschutz bei Google</a> und <a href="https://www.powr.io/privacy" target="_blank" rel="noopener noreferrer">Datenschutz bei POWR</a>.</p>
+    <p><button class="action-link" type="button" data-cookie-settings>Cookie-Einstellungen öffnen</button></p>
+</section>
+{% endblock %}

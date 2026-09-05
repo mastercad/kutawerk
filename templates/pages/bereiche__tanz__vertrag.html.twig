@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+{% set page_title = 'Mitglied werden' %}
+{% block title %}{{ page_title }} · KuTaWerk{% endblock %}
+{% block stylesheets %}<link rel="stylesheet" href="{{ asset('styles/contract.css') }}?v=20260905-1">{% endblock %}
+{% block body %}
+{% set membership = managed_document('membership_application') %}
+{% set garde = managed_document('garde_application') %}
+{% set contributions = managed_document('dance_contributions') %}
+<main class="contract-page">
+    <header class="contract-intro">
+        <p class="contract-eyebrow">Mitgliedschaft in der Tanzsparte</p>
+        <h1>Mitglied werden</h1>
+        <p class="contract-lead">Alle Unterlagen für Deine Mitgliedschaft findest Du hier übersichtlich zum Download.</p>
+    </header>
+
+    <section class="contract-process" aria-labelledby="contract-process-title">
+        <div class="contract-section-heading">
+            <p class="contract-eyebrow">So geht’s</p>
+            <h2 id="contract-process-title">In drei Schritten zur Mitgliedschaft</h2>
+        </div>
+        <ol class="contract-steps">
+            <li><span>1</span><div><strong>Antrag auswählen</strong><p>Wähle den allgemeinen Mitgliedsantrag oder den Antrag für Gardetanz.</p></div></li>
+            <li><span>2</span><div><strong>Vollständig ausfüllen</strong><p>Fülle alle freien Felder aus und unterschreibe den Antrag.</p></div></li>
+            <li><span>3</span><div><strong>Per E-Mail senden</strong><p>Sende den ausgefüllten Antrag an <a href="mailto:tanzsparte@kutawerk.de">tanzsparte@kutawerk.de</a>.</p></div></li>
+        </ol>
+    </section>
+
+    <section class="contract-documents" aria-labelledby="contract-documents-title">
+        <div class="contract-section-heading">
+            <p class="contract-eyebrow">Unterlagen</p>
+            <h2 id="contract-documents-title">Anträge und Beitragsordnung</h2>
+            <p>Die Dokumente stehen als PDF zum Herunterladen bereit.</p>
+        </div>
+        <div class="contract-document-grid">
+            {% if membership %}<article class="contract-document-card">
+                <div class="contract-document-mark" aria-hidden="true">PDF</div>
+                <div class="contract-document-copy"><p class="contract-document-type">Mitgliedsantrag</p><h3>Kultur- und Tanzwerkstatt e.V.</h3><p>Der allgemeine Aufnahmeantrag für die Mitgliedschaft im Verein.</p></div>
+                <div class="contract-document-footer"><span>PDF · {{ membership.formattedSize }}</span><a class="action-link" href="{{ membership.storedPath }}" download>Mitgliedsantrag herunterladen</a></div>
+            </article>{% endif %}
+            {% if garde %}<article class="contract-document-card">
+                <div class="contract-document-mark" aria-hidden="true">PDF</div>
+                <div class="contract-document-copy"><p class="contract-document-type">Mitgliedsantrag</p><h3>Gardetanz</h3><p>Der Antrag für die Kooperation mit dem Faschingsverein Hainsberg e.V.</p></div>
+                <div class="contract-document-footer"><span>PDF · {{ garde.formattedSize }}</span><a class="action-link" href="{{ garde.storedPath }}" download>Gardeantrag herunterladen</a></div>
+            </article>{% endif %}
+            {% if contributions %}<article class="contract-document-card">
+                <div class="contract-document-mark" aria-hidden="true">PDF</div>
+                <div class="contract-document-copy"><p class="contract-document-type">Beiträge</p><h3>Beitragsordnung der Tanzsparte</h3><p>Alle Informationen zu den Beiträgen der Tanzsparte.</p></div>
+                <div class="contract-document-footer"><span>PDF · {{ contributions.formattedSize }}</span><a class="action-link" href="{{ contributions.storedPath }}" download>Beitragsordnung herunterladen</a></div>
+            </article>{% endif %}
+        </div>
+    </section>
+
+    <section class="contract-contact" aria-labelledby="contract-contact-title">
+        <div><p class="contract-eyebrow">Noch Fragen?</p><h2 id="contract-contact-title">Wir helfen Dir gern weiter.</h2><p>Nutze unser Kontaktformular für alle Fragen zur Mitgliedschaft in der Tanzsparte.</p></div>
+        <a class="action-link contract-contact-action" href="{{ path('contact_dance') }}">Kontakt Tanzsparte</a>
+    </section>
+    <aside class="contract-cancellation" aria-labelledby="contract-cancellation-title">
+        <div class="contract-cancellation-icon" aria-hidden="true">i</div>
+        <div><h2 id="contract-cancellation-title">Hinweis zu Kündigungen</h2><p>Kündigungen bitte direkt an <a href="mailto:tanzsparte@kutawerk.de">tanzsparte@kutawerk.de</a> senden. Eine automatisierte Eingangsbestätigung wird nur bei dieser E-Mail-Adresse versendet.</p></div>
+    </aside>
+</main>
+{% endblock %}

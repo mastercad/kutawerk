@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+{% block title %}Trainingszeiten · KuTaWerk{% endblock %}
+{% block stylesheets %}<link rel="stylesheet" href="{{ asset('styles/admin.css') }}?v=20260905-schedule2">{% endblock %}
+{% block body %}
+<section class="schedule-overview">
+    <header class="schedule-heading">
+        <div><h1>Trainingszeiten</h1><p>Alle regelmäßigen Kurse, Trainingsorte und Zeiten auf einen Blick.</p></div>
+        <a class="button schedule-download" href="{{ path('dance_schedule_pdf') }}">Trainingszeiten als PDF</a>
+    </header>
+    {% set days = {1:'Montag',2:'Dienstag',3:'Mittwoch',4:'Donnerstag',5:'Freitag',6:'Samstag',7:'Sonntag'} %}
+    {% for day, name in days %}
+        {% set found = false %}
+        {% for session in sessions %}
+            {% if session.weekday == day %}
+                {% if not found %}<section class="schedule-day"><h2>{{ name }}</h2><div class="schedule-table"><div class="schedule-table-head"><span>Zeit</span><span>Kurs / Tanzstil</span><span>Trainingsort</span><span>Trainer</span></div>{% set found = true %}{% endif %}
+                <article><strong>{{ session.startsAt|date('H:i') }}–{{ session.endsAt|date('H:i') }}</strong><span>{{ session.course.name }}{% if session.course.ageGroup %} · {{ session.course.ageGroup }}{% endif %}{% if session.danceStyle %}<br><small>{{ session.danceStyle }}</small>{% endif %}</span><span>{{ session.location.name }}</span><span>{% if session.course.trainers is not empty %}{% for trainer in session.course.trainers %}{{ trainer.displayName }}{% if not loop.last %}, {% endif %}{% endfor %}{% else %}{{ session.legacyTrainerNames }}{% endif %}</span></article>
+            {% endif %}
+        {% endfor %}
+        {% if found %}</div></section>{% endif %}
+    {% endfor %}
+    {% if sessions is empty %}
+        <div class="schedule-empty"><h2>Der Trainingsplan wird vorbereitet</h2><p>Aktuell sind noch keine Trainingszeiten hinterlegt. Sobald die Kursleiter ihre Zeiten eingetragen haben, erscheinen sie automatisch hier und in der PDF.</p></div>
+    {% endif %}
+    {% if locations is not empty %}<section class="schedule-locations"><h2>Trainingsorte</h2><p class="location-intro">Unsere Trainingsorte befinden sich in Freital und Tharandt und sind mit den öffentlichen Verkehrsmitteln des RVSOE/VVO erreichbar.</p><div class="location-grid">{% for location in locations %}<article><h3>{{ location.name }}</h3>{% if location.address %}<p class="location-address">{{ location.address }}</p>{% endif %}{% if location.notes %}<p class="location-notes">{{ location.notes }}</p>{% endif %}</article>{% endfor %}</div></section>{% endif %}
+</section>
+{% endblock %}

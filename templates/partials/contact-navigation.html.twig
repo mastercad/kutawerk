@@ -1,0 +1,20 @@
+{% set contactTabs = [
+    {slug: 'board', label: 'Vorstand', route: 'contact_board'},
+    {slug: 'dance', label: 'Tanzsparte', route: 'contact_dance'},
+    {slug: 'culture', label: 'Kultursparte', route: 'contact_culture'},
+    {slug: 'technology', label: 'Techniksparte', route: 'contact_technology'},
+    {slug: 'kuta-lounge', label: 'KuTa Lounge', route: 'contact_lounge'}
+] %}
+{% set personSection = person is defined and person.departments is not empty ? person.departments|first.slug : '' %}
+<nav class="sub-navigation contact-navigation" aria-label="Kontaktbereiche">
+    {% for tab in contactTabs %}
+        {% set tabPath = path(tab.route) %}
+        {% set selected = current == tabPath or current starts with (tabPath ~ '/') or (current starts with '/contact/person/' and personSection == tab.slug) %}
+        <a href="{{ tabPath }}"{% if selected %} class="active" aria-current="{{ current == tabPath ? 'page' : 'location' }}"{% endif %}>{{ tab.label }}</a>
+    {% endfor %}
+</nav>
+{% if current == path('contact_dance') or current starts with (path('contact_dance') ~ '/') or (current starts with '/contact/person/' and personSection == 'dance') %}
+    <nav class="sub-navigation secondary" aria-label="Tanzsparten-Kontakt">
+        <a href="{{ path('contact_tickets') }}"{% if current == path('contact_tickets') %} class="active" aria-current="page"{% endif %}>Karten Vorverkauf</a>
+    </nav>
+{% endif %}

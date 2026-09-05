@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+{% set page_title = 'Vertrag widerrufen' %}
+{% block title %}{{ page_title }} · KuTaWerk{% endblock %}
+{% block body %}
+<div id="content_area" data-container="content">
+<div class="j-static-page cc-ewb">
+    <h1 class="n cc-ewb__title">Vertrag widerrufen</h1>
+
+    <div class="content-block n j-formnew">
+        <p class="n cc-ewb__intro">Online geschlossene Verträge können innerhalb von 14 Tagen widerrufen werden. Bitte das untenstehende Formular ausfüllen. Eine Eingangsbestätigung wird umgehend per E-Mail versendet.</p>
+
+        <p class="notice">Das frühere Website-Baukasten-Formular wurde nicht übernommen. Bitte nutzt bis zur Einrichtung des neuen Mailversands die angegebene E-Mail-Adresse.</p>
+
+        <div class="cc-ewb__success" id="ewb-withdrawal-success" hidden>
+            <div class="cc-ewb__success-icon" aria-hidden="true">✓</div>
+            <h2 class="n">Widerruf eingegangen</h2>
+            <p class="n cc-ewb__received-at" id="ewb-withdrawal-received-label" data-label-template="Die Widerrufserklärung ist eingegangen am {date}"></p>
+            <p class="n" id="ewb-withdrawal-success-body" data-body-template="Eine Bestätigung wurde an {email} gesendet. Der Anbieter wird den Widerruf gemäß den geltenden gesetzlichen Bestimmungen bearbeiten."></p>
+        </div>
+    </div>
+
+    
+</div>
+
+</div>
+{% endblock %}

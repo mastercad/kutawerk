@@ -1,0 +1,3 @@
+<section class="managed-gallery gallery-grid" aria-label="Bildergalerie">
+    {% for image in galleryImages %}<figure class="gallery-item"><a href="{{ asset(image.imagePath) }}" rel="lightbox[news-{{ post.id }}]" data-caption="{{ image.caption }}"><img src="{{ asset(image.imagePath) }}" alt="{{ image.caption ?: post.title }}" loading="lazy"></a>{% if image.caption %}<figcaption>{{ image.caption }}</figcaption>{% endif %}</figure>{% endfor %}
+</section>

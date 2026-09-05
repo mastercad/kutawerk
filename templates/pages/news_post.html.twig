@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ post.title }} · KuTaWerk{% endblock %}
+{% block body %}
+<article class="news-article">
+    <header class="news-header"><time class="news-date">{{ post.publishedAt|date('d.m.Y') }}</time><h1 class="news-title">{{ post.title }}</h1></header>
+    <div class="news-content formatted-text">
+        {% if post.contentHtml %}
+            {% for block in contentBlocks %}
+                {% if block.type == 'html' %}{{ block.content|raw }}{% elseif block.images is not empty %}{% include 'pages/_news_gallery.html.twig' with {galleryImages:block.images} %}{% endif %}
+            {% endfor %}
+        {% else %}{{ post.content|nl2br }}{% endif %}
+    </div>
+</article>
+{% endblock %}

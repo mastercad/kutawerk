@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+{% set page_title = 'Downloads' %}
+{% block title %}{{ page_title }} · KuTaWerk{% endblock %}
+{% block stylesheets %}<link rel="stylesheet" href="{{ asset('styles/downloads.css') }}?v=20260905-5">{% endblock %}
+{% block body %}
+{% set groups = [
+    {title:'Allgemeine Downloads', items:[
+        {key:'association_statutes', title:'Vereinssatzung Kultur- und Tanzwerkstatt e.V.', description:''},
+        {key:'lounge_contract', title:'Nutzungsvertrag KuTa Lounge', description:''},
+        {key:'membership_application', title:'Mitgliedsantrag Kultur- und Tanzwerkstatt e.V.', description:''},
+        {key:'garde_application', title:'Mitgliedsantrag Gardetanz', description:'Kooperation Kultur- und Tanzwerkstatt e.V. & Faschingsverein Hainsberg e.V.'},
+        {key:'dance_contributions', title:'Beitragsordnung Tanzsparte', description:''}
+    ]}
+] %}
+<main class="downloads-page">
+    <header><p class="downloads-eyebrow">Dokumente und Medien</p><h1>Downloads</h1><p>Hier finden Sie die aktuell gültigen Dokumente des Vereins.</p></header>
+    {% for group in groups %}
+        <section class="downloads-section"><h2>{{ group.title }}</h2><div class="downloads-grid">
+        {% for item in group.items %}{% set document=managed_document(item.key) %}{% if document %}
+            <article class="downloads-card"><img class="downloads-file-icon" src="{{ asset('media/pdf-icon.svg') }}" alt="" aria-hidden="true"><div><h3>{{ item.title }}</h3>{% if item.description %}<p>{{ item.description }}</p>{% endif %}<p class="downloads-meta">{{ document.originalName }}<br><span>PDF · {{ document.formattedSize }}</span></p></div><a class="download-link" href="{{ document.storedPath }}" download>Herunterladen</a></article>
+        {% endif %}{% endfor %}
+        </div></section>
+    {% endfor %}
+    <section class="downloads-section logo-downloads" aria-labelledby="logo-downloads-title">
+        <div class="logo-downloads-heading"><div><p class="downloads-eyebrow">Vereinslogo</p><h2 id="logo-downloads-title">Logo-Downloads</h2></div><p>Wählen Sie die Farbvariante und das passende Dateiformat für Ihren Verwendungszweck.</p></div>
+        <div class="logo-showcase">
+            <article class="logo-download-card">
+                <div class="logo-preview logo-preview-light"><img src="/downloads/8832838215-Kuta-Logo-Neu-ORIGINAL.png" alt="KuTaWerk-Logo in Grau und Blau" loading="lazy"></div>
+                <div class="logo-download-content"><div><p class="downloads-eyebrow">Für helle Hintergründe</p><h3>KuTaWerk-Logo · grau-blau</h3><p>Die reguläre Farbversion mit grauem Schriftzug und blauem Vereinsnamen.</p></div><div class="logo-format-actions"><a class="download-link" href="/downloads/8832838215-Kuta-Logo-Neu-ORIGINAL.png" download>PNG herunterladen <span>99,2 KB</span></a><a class="download-link logo-secondary-download" href="/downloads/8832838315-Kuta-Logo-Neu.eps" download>EPS herunterladen <span>1,7 MB</span></a></div></div>
+            </article>
+            <article class="logo-download-card">
+                <div class="logo-preview logo-preview-dark"><img src="/downloads/8832838915-Kuta-Logo-Neu-wei--blau.png" alt="KuTaWerk-Logo in Weiß und Blau" loading="lazy"></div>
+                <div class="logo-download-content"><div><p class="downloads-eyebrow">Für dunkle Hintergründe</p><h3>KuTaWerk-Logo · weiß-blau</h3><p>Die kontrastreiche Variante mit weißem Schriftzug für dunkle Flächen.</p></div><div class="logo-format-actions"><a class="download-link" href="/downloads/8832838915-Kuta-Logo-Neu-wei--blau.png" download>PNG herunterladen <span>100,6 KB</span></a><a class="download-link logo-secondary-download" href="/downloads/8832838815-Kuta-Logo-Neu-wei-blau.eps" download>EPS herunterladen <span>1,7 MB</span></a></div></div>
+            </article>
+        </div>
+    </section>
+</main>
+{% endblock %}

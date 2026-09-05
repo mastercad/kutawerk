@@ -1,0 +1,65 @@
+[
+    {
+        "id": "huettenfest-2026",
+        "date": "2026-09-05",
+        "time": "11:00",
+        "title": "Hüttenfest",
+        "location": "Edelstahlwerk Freital",
+        "description": "Auftritt verschiedener Gruppen laut Terminplan der Tanzsparte (Stand April 2026).",
+        "link": ""
+    },
+    {
+        "id": "windbergfest-2026",
+        "date": "2026-09-11",
+        "time": "nachmittags",
+        "title": "Windbergfest (11.–13. September)",
+        "location": "KuTa-Areal",
+        "description": "Mit allen Gruppen laut Terminplan der Tanzsparte (Stand April 2026).",
+        "link": ""
+    },
+    {
+        "id": "sachsenpokal-grimma-2026",
+        "date": "2026-09-19",
+        "time": "ganztägig",
+        "title": "Sachsenpokal",
+        "location": "Grimma",
+        "description": "Turnier S4B, Swaying Thunders und Magic Moves.",
+        "link": ""
+    },
+    {
+        "id": "weinfest-pesterwitz-2026",
+        "date": "2026-09-19",
+        "time": "nachmittags",
+        "title": "Weinfest (19.–20. September)",
+        "location": "Pesterwitz",
+        "description": "Auftritt verschiedener Gruppen.",
+        "link": ""
+    },
+    {
+        "id": "sachsenpokal-chemnitz-2026",
+        "date": "2026-11-07",
+        "time": "ganztägig",
+        "title": "Sachsenpokal",
+        "location": "Chemnitz",
+        "description": "Turnier S4B, Swaying Thunders und Magic Moves.",
+        "link": ""
+    },
+    {
+        "id": "sachsenpokal-glauchau-2026",
+        "date": "2026-11-14",
+        "time": "ganztägig",
+        "title": "Sachsenpokal",
+        "location": "Glauchau",
+        "description": "Turnier S4B, Swaying Thunders und Magic Moves.",
+        "link": ""
+    },
+    {
+        "id": "potschappler-advent-2026",
+        "date": "2026-12-19",
+        "time": "nachmittags/abends",
+        "title": "Potschappler Advent (19.–20. Dezember)",
+        "location": "Platz des Handwerkes",
+        "description": "Auftritt verschiedener Gruppen.",
+        "link": ""
+    }
+]

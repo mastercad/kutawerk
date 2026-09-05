@@ -1,0 +1,74 @@
+services:
+  database:
+    image: mysql:8.4
+    container_name: kutawerk_database
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: kutawerk
+      MYSQL_USER: kutawerk
+      MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - database_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p${MYSQL_ROOT_PASSWORD} --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 20s
+
+  migrations:
+    image: ${PHP_IMAGE:-ghcr.io/byte-artist/kutawerk-php}:${IMAGE_TAG:-latest}
+    environment: &app-environment
+      APP_ENV: prod
+      APP_DEBUG: 0
+      APP_SECRET: "${APP_SECRET}"
+      DATABASE_URL: "mysql://kutawerk:${MYSQL_PASSWORD}@database:3306/kutawerk?serverVersion=8.4.0&charset=utf8mb4"
+      DEFAULT_URI: "${KUTAWERK_DEFAULT_URI:-https://kutawerk.byte-artist.de}"
+      MAILER_DSN: "${MAILER_DSN:-null://null}"
+      MAILER_FROM: "${MAILER_FROM:-info@kutawerk.de}"
+    command: sh -c "php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration && php bin/console app:content:import-legacy --no-interaction"
+    depends_on:
+      database:
+        condition: service_healthy
+    restart: "no"
+
+  php:
+    image: ${PHP_IMAGE:-ghcr.io/byte-artist/kutawerk-php}:${IMAGE_TAG:-latest}
+    container_name: kutawerk_php
+    restart: unless-stopped
+    environment: *app-environment
+    depends_on:
+      database:
+        condition: service_healthy
+    volumes:
+      - uploads_data:/app/public/uploads
+    healthcheck:
+      test: ["CMD-SHELL", "php-fpm -t >/dev/null 2>&1 || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  web:
+    image: ${WEB_IMAGE:-ghcr.io/byte-artist/kutawerk-web}:${IMAGE_TAG:-latest}
+    container_name: kutawerk_web
+    restart: unless-stopped
+    ports:
+      - "${HTTP_BIND:-127.0.0.1}:${HTTP_PORT:-8098}:80"
+    depends_on:
+      php:
+        condition: service_healthy
+    volumes:
+      - uploads_data:/app/public/uploads:ro
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://127.0.0.1/ || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+volumes:
+  database_data:
+  uploads_data:

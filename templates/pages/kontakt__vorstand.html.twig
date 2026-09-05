@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+{% set page_title = 'BGB - Vorstand' %}
+{% block title %}{{ page_title }} · KuTaWerk{% endblock %}
+{% block stylesheets %}<link rel="stylesheet" href="{{ asset('styles/contact.css') }}?v=20260904-7">{% endblock %}
+
+{% set board = [
+    {image: 'media/i1de5ad7478dd72ef.png', role: '1. Vorstandsvorsitzender', name: 'Thorsten Mager', email: 'mager@kutawerk.de'},
+    {image: 'media/id385165e3fb437b1.png', role: '2. Vorstandsvorsitzende', name: 'Andrea Brückner', email: 'brueckner@kutawerk.de'},
+    {image: 'media/i6559bf26c65f9b15.jpg', role: 'Schatzmeister', name: 'Uwe Jonas', email: 'jonas@kutawerk.de'}
+] %}
+{% set controlling = [
+    {image: 'media/i746d36f7c7d00a20.png', role: 'Controlling & Beratung des Vorstandes', name: 'Kerstin Mager-Baran', note: '(Ehrenamt)', email: 'mager-baran@kutawerk.de'}
+] %}
+{% set generalContacts = [
+    {image: 'media/ib068f449b5ff5232.png', role: 'Verantwortliche Öffentlichkeitsarbeit', name: 'Linda Liebert', email: 'liebert@kutawerk.de'},
+    {image: 'media/i6fbc1c0a79280bf5.png', role: 'Koordination & Ansprechpartner KuTa Lounge', name: 'Sebastian Emmerlich', email: 'lounge@kutawerk.de'}
+] %}
+{% set youth = [
+    {image: 'media/ie6cd32929a52f4ce.png', role: 'Koordination & Ansprechpartner', name: 'Josi Striemann', email: 'verein@kutawerk.de'}
+] %}
+
+{% macro person(person) %}
+    <article class="board-person">
+        <img src="{{ asset(person.image) }}" alt="{{ person.name }}" loading="lazy">
+        <div class="board-person-details">
+            <p class="board-person-role">{{ person.role }}</p>
+            <h3>{{ person.name }}</h3>
+            {% if person.note is defined %}<p class="board-person-note">{{ person.note }}</p>{% endif %}
+            <a href="mailto:{{ person.email }}">{{ person.email }}</a>
+        </div>
+    </article>
+{% endmacro %}
+
+{% block body %}
+<section class="board-page">
+    <header class="board-header">
+        <h1>{{ page_title }}</h1>
+        <p>(Geschäftsführung)</p>
+    </header>
+
+    <div class="board-grid board-grid-three">
+        {% for person in board %}{{ _self.person(person) }}{% endfor %}
+    </div>
+
+    <section class="board-section">
+        <h2>Controlling &amp; Beratung des Vorstandes</h2>
+        <div class="board-grid board-grid-one">
+            {% for person in controlling %}{{ _self.person(person) }}{% endfor %}
+        </div>
+    </section>
+
+    <section class="board-section">
+        <h2>Allgemeine Ansprechpartner</h2>
+        <div class="board-grid board-grid-two">
+            {% for person in generalContacts %}{{ _self.person(person) }}{% endfor %}
+        </div>
+    </section>
+
+    <section class="board-section">
+        <h2>Jugendvertretung aller Sparten</h2>
+        <div class="board-grid board-grid-one">
+            {% for person in youth %}{{ _self.person(person) }}{% endfor %}
+        </div>
+    </section>
+</section>
+{% endblock %}

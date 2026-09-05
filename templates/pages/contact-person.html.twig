@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+{% block title %}Kontakt mit {{ person.displayName }} · KuTaWerk{% endblock %}
+{% block stylesheets %}<link rel="stylesheet" href="{{ asset('styles/contact.css') }}?v=20260904-9">{% endblock %}
+{% block body %}
+<section class="contact-form-page">
+    <h1>Kontakt mit {{ person.displayName }}</h1>
+    {% include 'pages/_contact-layout.html.twig' %}
+</section>
+{% endblock %}

@@ -1,0 +1,12 @@
+    <form action="{{ path('contact_person', {id: person.id}) }}" method="post" class="contact-form">
+        <input type="hidden" name="_token" value="{{ csrf_token('contact-' ~ person.id) }}">
+        <label>Name *<input name="name" value="{{ values.name }}" required autocomplete="name"></label>
+        <label>E-Mail *<input type="email" name="email" value="{{ values.email }}" required autocomplete="email"></label>
+        <label>Telefon *<input type="tel" name="phone" value="{{ values.phone }}" required autocomplete="tel"></label>
+        <label>Betreff<input name="subject" value="{{ values.subject }}"></label>
+        <label>Nachricht *<textarea name="message" rows="8" required>{{ values.message }}</textarea></label>
+        <label class="contact-honeypot" aria-hidden="true">Webseite<input type="text" name="website" value="" tabindex="-1" autocomplete="off" inputmode="none"></label>
+        <p class="contact-privacy">Es gilt unsere <a href="{{ path('legal_privacy') }}">Datenschutzerklärung</a>.</p>
+        <div class="contact-submit"><button class="action-link" type="submit">absenden</button></div>
+        <p class="contact-required"><strong>Hinweis:</strong> Bitte die mit <span>*</span> gekennzeichneten Felder ausfüllen.</p>
+    </form>

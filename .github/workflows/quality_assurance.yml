@@ -1,0 +1,76 @@
+name: "Quality Assurance"
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened]
+
+jobs:
+  php:
+    name: "PHP QA"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP 8.4
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.4"
+          extensions: ctype, dom, iconv, mbstring, pdo_mysql, xml
+          coverage: none
+
+      - name: Validate Composer files
+        run: composer validate --strict
+
+      - name: Cache Composer packages
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: ${{ runner.os }}-composer-${{ hashFiles('composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Security audit
+        run: composer audit --no-dev
+
+      - name: Check PHP syntax
+        run: find src migrations -name "*.php" -print0 | xargs -0 -P4 -n1 php -l
+
+      - name: Lint Twig templates
+        env:
+          APP_ENV: prod
+          APP_SECRET: ci_secret_for_validation_only
+          DATABASE_URL: "mysql://unused:unused@127.0.0.1:3306/unused?serverVersion=8.4.0&charset=utf8mb4"
+        run: php bin/console lint:twig templates --env=prod
+
+      - name: Lint YAML configuration
+        env:
+          APP_ENV: prod
+          APP_SECRET: ci_secret_for_validation_only
+          DATABASE_URL: "mysql://unused:unused@127.0.0.1:3306/unused?serverVersion=8.4.0&charset=utf8mb4"
+        run: php bin/console lint:yaml config --parse-tags
+
+      - name: Lint Symfony container
+        env:
+          APP_ENV: prod
+          APP_SECRET: ci_secret_for_validation_only
+          DATABASE_URL: "mysql://unused:unused@127.0.0.1:3306/unused?serverVersion=8.4.0&charset=utf8mb4"
+        run: php bin/console lint:container --env=prod
+
+  docker:
+    name: "Production Compose"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Validate production Compose file
+        env:
+          APP_SECRET: ci_secret
+          MYSQL_PASSWORD: ci_database_password
+          MYSQL_ROOT_PASSWORD: ci_root_password
+        run: docker compose -f docker-compose.prod.yml --env-file .env.docker.dist config --quiet

@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+{% set page_title = 'Datenschutzerklärung' %}
+{% block title %}{{ page_title }} · KuTaWerk{% endblock %}
+{% block body %}
+<section class="legal-page">
+    <h1>Datenschutzerklärung</h1>
+    <h2>Verantwortlicher</h2>
+    <p>Die verantwortliche Stelle und ihre Kontaktdaten findest du im <a href="{{ path('legal_imprint') }}">Impressum</a>.</p>
+    <h2>Kontaktformulare</h2>
+    <p>Wenn du ein Kontaktformular absendest, verarbeitet die Website die von dir eingegebenen Angaben und übermittelt sie per E-Mail an die ausgewählte Ansprechperson. Die Angaben werden zur Bearbeitung deiner Anfrage verwendet.</p>
+    <h2>Externe Medien</h2>
+    <p>Google Maps und der Instagram-Inhalt von POWR werden erst nach deiner Zustimmung geladen. Beim Laden wird eine Verbindung zum jeweiligen Anbieter hergestellt. Einzelheiten und die Möglichkeit, deine Auswahl zu ändern, findest du in der <a href="{{ path('legal_cookies') }}">Cookie-Richtlinie</a>.</p>
+    <h2>Cookie-Einstellungen</h2>
+    <p>Deine Auswahl für externe Medien wird lokal in deinem Browser gespeichert. Du kannst sie jederzeit über „Cookie-Einstellungen“ im Seitenfuß ändern.</p>
+</section>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+{% block title %}Trainer · KuTaWerk{% endblock %}
+{% block stylesheets %}<link rel="stylesheet" href="{{ asset('styles/trainers.css') }}?v=20260904-3">{% endblock %}
+{% block body %}
+<section class="trainer-page">
+    <header class="trainer-page-heading">
+        <h1>Trainer</h1>
+        <p>Unsere Trainerinnen und Trainer begleiten die Gruppen der Kultur- und Tanzwerkstatt.</p>
+    </header>
+    <div class="trainer-grid">
+        {% for trainer in trainers %}
+            <article class="trainer-card">
+                <img class="trainer-portrait" src="{{ asset(trainer.trainerImagePath ?: 'media/trainer-placeholder.svg') }}" alt="{{ trainer.displayName }}" loading="lazy">
+                <div class="trainer-card-content">
+                    <h2>{{ trainer.displayName }}</h2>
+                    {% set trainerCourses = [] %}
+                    {% for course in courses %}{% if trainer in course.trainers %}{% set trainerCourses = trainerCourses|merge([course.name]) %}{% endif %}{% endfor %}
+                    {% if trainerCourses is not empty %}<p class="trainer-courses">{{ trainerCourses|join(' · ') }}</p>{% endif %}
+                    {% for line in profiles[trainer.id].intro %}{% if 'Ansprechpartner' in line and trainer.contactPerson %}<a class="trainer-specialty trainer-specialty-primary" href="{{ path('contact_person', {id: trainer.id}) }}">{{ line }}</a>{% else %}<p class="trainer-specialty {{ 'Ansprechpartner' in line ? 'trainer-specialty-primary' }}">{{ line }}</p>{% endif %}{% endfor %}
+                    {% if profiles[trainer.id].blocks is not empty %}
+                        <details class="trainer-details">
+                            <summary>Mehr über {{ trainer.firstName }}</summary>
+                            <div class="trainer-bio">{% for block in profiles[trainer.id].blocks %}{% if block.type == 'list' %}<ul>{% for item in block.items %}<li>{{ item }}</li>{% endfor %}</ul>{% else %}<p>{{ block.text|nl2br }}</p>{% endif %}{% endfor %}</div>
+                        </details>
+                    {% endif %}
+                </div>
+            </article>
+        {% else %}
+            <div class="trainer-empty"><h2>Unser Trainerteam wird gerade aktualisiert</h2><p>Die Ansprechpartnerinnen und Ansprechpartner werden in Kürze hier angezeigt.</p></div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

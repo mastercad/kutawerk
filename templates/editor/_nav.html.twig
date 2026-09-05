@@ -1,0 +1,10 @@
+{% set route = app.request.attributes.get('_route') %}
+<nav class="editor-nav" aria-label="Redaktionsnavigation">
+    <div class="editor-nav-brand"><span>KuTaWerk</span><strong>Redaktion</strong></div>
+    <div class="editor-nav-group"><span>Übersicht</span><a class="{{ route == 'editor_dashboard' ? 'active' : '' }}" href="{{ path('editor_dashboard') }}">Dashboard</a></div>
+    {% if is_granted('ROLE_ADMIN') %}<div class="editor-nav-group"><span>Organisation</span><a class="{{ route == 'editor_users' ? 'active' : '' }}" href="{{ path('editor_users') }}">Benutzer & Trainer</a><a class="{{ route == 'editor_locations' ? 'active' : '' }}" href="{{ path('editor_locations') }}">Trainingsorte</a><a class="{{ route == 'editor_courses' ? 'active' : '' }}" href="{{ path('editor_courses') }}">Kurse</a></div>{% endif %}
+    <div class="editor-nav-group"><span>Inhalte</span>{% if is_granted('ROLE_ADMIN') or app.user.hasPermission(constant('App\\Entity\\User::PERMISSION_NEWS')) %}<a class="{{ route == 'editor_news' ? 'active' : '' }}" href="{{ path('editor_news') }}">News</a>{% endif %}{% if is_granted('ROLE_ADMIN') or app.user.hasPermission(constant('App\\Entity\\User::PERMISSION_TRAINING')) %}<a class="{{ route == 'editor_training_times' ? 'active' : '' }}" href="{{ path('editor_training_times') }}">Trainingszeiten</a>{% endif %}{% if is_granted('ROLE_ADMIN') or app.user.hasPermission(constant('App\\Entity\\User::PERMISSION_EVENTS')) %}<a class="{{ route == 'editor_events' ? 'active' : '' }}" href="{{ path('editor_events') }}">Termine</a>{% endif %}{% if is_granted('ROLE_ADMIN') %}<a class="{{ route == 'editor_documents' ? 'active' : '' }}" href="{{ path('editor_documents') }}">Dokumente</a>{% endif %}</div>
+    <div class="editor-nav-group editor-nav-account"><span>Konto</span><a href="{{ path('password_change') }}">Passwort ändern</a><a href="{{ path('app_logout') }}">Abmelden</a></div>
+</nav>
+<link rel="stylesheet" href="{{ asset('styles/editor-state.css') }}?v=20260904-2">
+<script src="{{ asset('scripts/editor-state.js') }}?v=20260904-5" defer></script>

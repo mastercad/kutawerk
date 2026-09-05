@@ -1,0 +1,55 @@
+.technology-page{display:grid;gap:78px}
+.technology-eyebrow{margin:0 0 9px;color:#4d4e4d;font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.technology-intro{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(360px,.95fr);align-items:center;gap:54px}
+.technology-intro-copy{padding:12px 0}
+.technology-page .technology-intro h1{margin:0 0 22px;text-align:left;font-size:46px}
+.technology-lead{max-width:600px;margin:0;color:#53636a;font-size:20px;line-height:1.65}
+.technology-intro-action{margin-top:29px;padding:12px 21px;font-weight:700}
+.technology-visual{position:relative;margin:0;overflow:hidden;border-radius:10px;background:#e5f4f9;box-shadow:0 14px 38px rgba(28,54,65,.14)}
+.technology-visual:after{position:absolute;inset:0;border:1px solid rgba(0,162,216,.18);border-radius:inherit;content:'';pointer-events:none}
+.technology-visual img{display:block;width:100%;min-height:270px;object-fit:cover}
+.technology-section-heading{max-width:760px;margin:0 auto 34px;text-align:center}
+.technology-page .technology-section-heading h2{margin:0 0 13px;font-size:34px;font-weight:700}
+.technology-section-heading>p:last-child{margin:0;color:#617078;font-size:17px;line-height:1.6}
+.technology-service-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.technology-service-card{position:relative;min-height:260px;padding:30px 31px;border:1px solid #d7e1e5;border-radius:9px;background:#fff;box-shadow:0 6px 22px rgba(30,57,69,.06)}
+.technology-service-number{display:inline-block;margin-bottom:18px;color:#00a2d8;font-size:14px;font-weight:700;letter-spacing:.08em}
+.technology-page .technology-service-card h3{margin:0 0 16px;color:#30434d;font-size:23px}
+.technology-service-card ul{margin:0;padding:0;list-style:none;color:#56666d;line-height:1.55}
+.technology-service-card li{position:relative;padding-left:19px}
+.technology-service-card li+li{margin-top:8px}
+.technology-service-card li:before{position:absolute;top:.65em;left:0;width:7px;height:7px;border-radius:50%;background:#00a2d8;content:''}
+.technology-support{display:grid;grid-template-columns:minmax(0,.9fr) minmax(430px,1.1fr);align-items:center;gap:58px;padding:42px;border-radius:10px;background:#f1f7f9}
+.technology-page .technology-support h2{margin:0 0 15px;font-size:32px;font-weight:700}
+.technology-support>div>p:last-child{margin:0;color:#56666d;font-size:17px;line-height:1.65}
+.technology-steps{display:grid;gap:12px;margin:0;padding:0;list-style:none}
+.technology-steps li{display:flex;align-items:center;gap:15px;padding:15px 18px;border:1px solid #d5e1e5;border-radius:7px;background:#fff;color:#30434d}
+.technology-steps span{display:grid;width:34px;height:34px;flex:0 0 34px;place-items:center;border-radius:50%;background:#dff3fa;color:#008fbe;font-weight:700}
+.technology-contact{display:flex;align-items:center;justify-content:space-between;gap:35px;padding:36px 40px;border-left:5px solid #00a2d8;background:#30434d;color:#fff}
+.technology-contact .technology-eyebrow{color:#b7ddea}
+.technology-page .technology-contact h2{max-width:680px;margin:0;color:#fff;font-size:29px;font-weight:700}
+.technology-contact .action-link{flex:0 0 auto;font-weight:700}
+@media(max-width:850px){
+    .technology-page{gap:58px}
+    .technology-intro{grid-template-columns:1fr;gap:32px}
+    .technology-intro-copy{text-align:center}
+    .technology-page .technology-intro h1{text-align:center}
+    .technology-lead{margin-inline:auto}
+    .technology-visual{max-width:640px;margin-inline:auto}
+    .technology-support{grid-template-columns:1fr;gap:30px}
+    .technology-contact{align-items:flex-start;flex-direction:column}
+}
+@media(max-width:600px){
+    .technology-page{gap:46px}
+    .technology-page .technology-intro h1{font-size:38px}
+    .technology-lead{font-size:18px}
+    .technology-visual img{min-height:0}
+    .technology-service-grid{grid-template-columns:1fr}
+    .technology-service-card{min-height:0;padding:25px 23px}
+    .technology-page .technology-section-heading h2{font-size:29px}
+    .technology-support{padding:29px 23px}
+    .technology-page .technology-support h2{font-size:28px}
+    .technology-contact{padding:29px 24px}
+    .technology-page .technology-contact h2{font-size:26px}
+    .technology-contact .action-link{width:100%;text-align:center}
+}

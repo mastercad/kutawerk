@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+{% set page_title = 'KuTa Lounge für Ihre Veranstaltung mieten' %}
+{% block title %}{{ page_title }} · KuTaWerk{% endblock %}
+{% block stylesheets %}<link rel="stylesheet" href="{{ asset('styles/lounge-rental.css') }}?v=20260905-1">{% endblock %}
+{% block body %}
+{% set loungeContract = managed_document('lounge_contract') %}
+<div id="content_area" class="rental-page" data-container="content">
+<div><div class="content-block n content-heading "><h1 class="">KuTa Lounge für Ihre Veranstaltung mieten</h1></div><div class="content-block n content-spacing-block ">
+    <div class="content-spacing" style="height: 25px;">
+    
+</div>
+
+</div><div class="content-block n image-gallery "><div class="gallery-container gallery-grid clearover">
+    <div class="gallery-item" id="gallery_thumb_5605241715">
+        <div>
+            
+                <a rel="lightbox[8265553315]" data-title=""><img src="/media/icaea19bcf3961a0e.jpg" alt="" loading="lazy"></a>        </div>
+    </div>
+    <div class="gallery-item" id="gallery_thumb_5605241915">
+        <div>
+            
+                <a rel="lightbox[8265553315]" data-title=""><img src="/media/ia0ff4982b3a23d57.jpg" alt="" loading="lazy"></a>        </div>
+    </div>
+    <div class="gallery-item" id="gallery_thumb_5605242015">
+        <div>
+            
+                <a rel="lightbox[8265553315]" data-title=""><img src="/media/i6ef3098047086373.jpg" alt="" loading="lazy"></a>        </div>
+    </div>
+    <div class="gallery-item" id="gallery_thumb_5605242115">
+        <div>
+            
+                <a rel="lightbox[8265553315]" data-title=""><img src="/media/ic9793393448ea9e6.jpg" alt="" loading="lazy"></a>        </div>
+    </div>
+</div>
+</div><section class="rental-contact" aria-labelledby="rental-contact-title">
+    <div class="rental-contact-heading">
+        <p class="rental-eyebrow">Interesse an der KuTa Lounge?</p>
+        <h2 id="rental-contact-title">Ihre Veranstaltung bei uns</h2>
+        <p>Schreiben Sie uns kurz, was Sie planen. Wir melden uns persönlich bei Ihnen und besprechen die Möglichkeiten.</p>
+    </div>
+    <div class="rental-contact-grid">
+        <article class="rental-card">
+            <span class="rental-card-icon" aria-hidden="true">@</span>
+            <div>
+                <h3>Vermietung anfragen</h3>
+                <p class="rental-card-copy">Fragen zur Nutzung, Ausstattung oder zu einem gewünschten Termin beantworten wir gerne direkt.</p>
+                <p class="rental-contact-address"><span>E-Mail</span><a href="mailto:lounge@kutawerk.de">lounge@kutawerk.de</a></p>
+                <a class="action-link rental-primary-action" href="{{ path('contact_lounge') }}">Kontaktformular öffnen</a>
+            </div>
+        </article>
+        {% if loungeContract %}<article class="rental-card rental-document-card">
+            <span class="rental-card-icon rental-document-icon" aria-hidden="true">PDF</span>
+            <div>
+                <h3>Nutzungsvertrag</h3>
+                <p class="rental-card-copy">Alle vertraglichen Angaben zur Nutzung der KuTa Lounge finden Sie im Dokument.</p>
+                <p class="rental-document-meta"><strong>{{ loungeContract.originalName }}</strong><span>PDF · {{ loungeContract.formattedSize }}</span></p>
+                <a class="download-link rental-download-action" href="{{ loungeContract.storedPath }}" download>Nutzungsvertrag herunterladen</a>
+            </div>
+        </article>{% endif %}
+    </div>
+</section>
+</div>
+</div>
+{% endblock %}

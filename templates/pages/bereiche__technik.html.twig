@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+{% set page_title = 'Techniksparte' %}
+{% block title %}{{ page_title }} · KuTaWerk{% endblock %}
+{% block stylesheets %}<link rel="stylesheet" href="{{ asset('styles/technology.css') }}?v=20260905-1">{% endblock %}
+{% block body %}
+<section class="technology-page">
+    <header class="technology-intro">
+        <div class="technology-intro-copy">
+            <p class="technology-eyebrow">Eventtechnik und Ausstattung</p>
+            <h1>Techniksparte</h1>
+            <p class="technology-lead">Ob kleine Feier oder großes Event: Wir stellen das passende Equipment zusammen und unterstützen Ihre Veranstaltung mit einem erfahrenen Event-Team.</p>
+            <a class="action-link technology-intro-action" href="{{ path('contact_technology') }}">Angebot anfragen</a>
+        </div>
+        <figure class="technology-visual">
+            <img src="{{ asset('media/i127888b254557018.jpg') }}" alt="Übersicht des Veranstaltungsangebots der Techniksparte">
+        </figure>
+    </header>
+
+    <section class="technology-services" aria-labelledby="technology-services-title">
+        <div class="technology-section-heading">
+            <p class="technology-eyebrow">Unser Equipment</p>
+            <h2 id="technology-services-title">Alles, was Ihre Veranstaltung braucht</h2>
+            <p>Von Bühne und Stromversorgung bis zu Mobiliar und Ausschanktechnik erhalten Sie die Ausstattung passend zu Ihrem Vorhaben.</p>
+        </div>
+        <div class="technology-service-grid">
+            <article class="technology-service-card">
+                <span class="technology-service-number" aria-hidden="true">01</span>
+                <h3>Bühne und Konstruktion</h3>
+                <ul>
+                    <li>Bühnen mit und ohne Dach</li>
+                    <li>Traversen</li>
+                    <li>Partyzelte, Pavillons und Großschirme</li>
+                </ul>
+            </article>
+            <article class="technology-service-card">
+                <span class="technology-service-number" aria-hidden="true">02</span>
+                <h3>Licht, Ton und Strom</h3>
+                <ul>
+                    <li>Licht- und Tonanlagen</li>
+                    <li>Stromkabel und Verteiler</li>
+                    <li>Kabelüberfahrten</li>
+                </ul>
+            </article>
+            <article class="technology-service-card">
+                <span class="technology-service-number" aria-hidden="true">03</span>
+                <h3>Mobiliar und Freizeit</h3>
+                <ul>
+                    <li>Festzeltgarnituren, Tische und Stühle</li>
+                    <li>Couches und Liegestühle</li>
+                    <li>Hüpfburgen und Spiele-Parcours</li>
+                </ul>
+            </article>
+            <article class="technology-service-card">
+                <span class="technology-service-number" aria-hidden="true">04</span>
+                <h3>Gastronomie und Versorgung</h3>
+                <ul>
+                    <li>Geschirr, Gläser und Mehrwegbecher</li>
+                    <li>Spülmaschinen und Spülstrecken</li>
+                    <li>Kühlschränke und Durchlaufkühler</li>
+                    <li>Ausschankwagen sowie Zu- und Abwasserleitungen</li>
+                </ul>
+            </article>
+        </div>
+    </section>
+
+    <section class="technology-support" aria-labelledby="technology-support-title">
+        <div>
+            <p class="technology-eyebrow">Persönlich begleitet</p>
+            <h2 id="technology-support-title">Mehr als die reine Vermietung</h2>
+            <p>Unser Event-Team kümmert sich auf Wunsch um Transport, Auf- und Abbau sowie die Betreuung vor Ort. Seit vielen Jahren unterstützen wir Veranstaltungen in unserer Region.</p>
+        </div>
+        <ol class="technology-steps">
+            <li><span>1</span><strong>Bedarf abstimmen</strong></li>
+            <li><span>2</span><strong>Transport und Aufbau</strong></li>
+            <li><span>3</span><strong>Betreuung vor Ort</strong></li>
+        </ol>
+    </section>
+
+    <aside class="technology-contact">
+        <div>
+            <p class="technology-eyebrow">Sie planen eine Veranstaltung?</p>
+            <h2>Wir stellen das passende Angebot zusammen.</h2>
+        </div>
+        <a class="action-link" href="{{ path('contact_technology') }}">Techniksparte kontaktieren</a>
+    </aside>
+</section>
+{% endblock %}

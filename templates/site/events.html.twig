@@ -1,0 +1,3 @@
+{% extends 'base.html.twig' %}
+{% block title %}Veranstaltungen · KuTaWerk{% endblock %}
+{% block body %}<header class="page-hero"><p class="eyebrow">Immer etwas los</p><h1>Veranstaltungen</h1><p>Alle aktuellen Termine des KuTaWerks auf einen Blick.</p></header><section class="section">{% include 'site/_event_list.html.twig' with {events: events} %}</section>{% endblock %}

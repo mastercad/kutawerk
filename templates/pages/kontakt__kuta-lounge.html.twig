@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+{% set page_title = 'Kontakt KuTa Lounge' %}
+{% block title %}{{ page_title }} · KuTaWerk{% endblock %}
+{% block stylesheets %}<link rel="stylesheet" href="{{ asset('styles/contact.css') }}?v=20260904-9">{% endblock %}
+{% block body %}
+<div id="content_area" data-container="content">
+<div><div class="content-block n content-heading "><h1 class="">Kontakt KuTa Lounge</h1></div><div class="content-block n content-spacing-block ">
+    <div class="content-spacing" style="height: 25px;">
+    
+</div>
+
+</div>{% if people is not empty %}
+    {% for person in people %}
+        {% include 'pages/_contact-layout.html.twig' with {values: {name: '', email: '', phone: '', subject: '', message: ''}} %}
+    {% endfor %}
+{% else %}
+<div class="content-block n content-grid ">    <div class="content-column" style="width: 37%;">
+        <div><div class="content-block n image-block "><figure class="image-frame image-center image-full">
+<img sizes="(min-width: 1000px) 1000px, 100vw" src="/media/i6be93c64609a0481.png" alt="" class="" loading="lazy">    
+
+</figure>
+
+<div class="clear"></div>
+</div><div class="content-block n formatted-text "><p style="text-align: center;">
+    <span style="color: #00a1d6;"><strong>Koordination &amp; Ansprechpartner KuTa Lounge</strong></span>
+</p>
+
+<p style="text-align: center;">
+    <strong>Emma</strong>
+</p>
+
+<p style="text-align: center;">
+     
+</p>
+
+<p style="text-align: center;">
+    <strong><a href="mailto:lounge@kutawerk.de" class="__cf_email__" data-cfemail="e18d8e948f8684a18a9495809684938acf8584">lounge@kutawerk.de</a></strong>
+</p></div></div>    </div>
+            
+        <div class="content-column last" style="width: 61%;">
+        <div><div class="content-block n j-formnew ">
+<p><a class="action-link" href="mailto:lounge@kutawerk.de">E-Mail schreiben</a></p>
+</div></div>    </div>
+    
+
+<br class="clear">
+
+</div>
+{% endif %}<div class="content-block n content-spacing-block ">
+    <div class="content-spacing" style="height: 20px;">
+    
+</div>
+
+</div></div>
+
+</div>
+{% endblock %}

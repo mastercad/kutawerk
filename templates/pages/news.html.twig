@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+{% block title %}News · KuTaWerk{% endblock %}
+{% block stylesheets %}<link rel="stylesheet" href="{{ asset('styles/news-list.css') }}?v=20260904-2">{% endblock %}
+{% block body %}
+<div id="content_area" data-container="content">
+    {% for post in current_posts %}
+        <article class="news-entry n clearover news-article">
+            <div class="content-block n content-grid">
+                {% if post.imagePath %}<div class="content-column news-list-image"><div class="content-block n image-block"><figure class="image-frame image-left image-full"><a href="{{ path('news_article', {slug:post.slug}) }}"><img src="{{ post.imagePath }}" alt=""></a></figure></div></div>{% endif %}
+                <div class="content-column last news-list-copy"><div class="content-block n formatted-text">{{ post.publishedAt|date('d.m.Y') }}</div><div class="content-block n formatted-text"><div class="news-entry"><div class="news-header" style="padding-left:0;padding-right:0"><a href="{{ path('news_article', {slug:post.slug}) }}"><h2 class="news-title news-title">{{ post.title }}</h2></a></div></div></div><div class="content-block n formatted-text">{{ post.excerpt ?: post.content|striptags }}</div><div class="content-block n formatted-text"><p><a href="{{ path('news_article', {slug:post.slug}) }}">Mehr lesen...</a></p></div></div>
+                <br class="clear">
+            </div>
+        </article>
+        <div class="content-block n content-spacing-block"><div class="content-spacing" style="height:40px"></div></div>
+    {% else %}<p>Derzeit sind keine News veröffentlicht.</p>{% endfor %}
+</div>
+{% endblock %}

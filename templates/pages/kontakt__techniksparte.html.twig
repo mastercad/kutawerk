@@ -1,0 +1,93 @@
+{% extends 'base.html.twig' %}
+{% set page_title = 'Kontakt Techniksparte' %}
+{% block title %}{{ page_title }} · KuTaWerk{% endblock %}
+{% block stylesheets %}<link rel="stylesheet" href="{{ asset('styles/contact.css') }}?v=20260904-9">{% endblock %}
+{% block body %}
+<div id="content_area" data-container="content">
+<div><div class="content-block n content-heading "><h1 class="">Kontakt Techniksparte</h1></div><div class="content-block n content-spacing-block ">
+    <div class="content-spacing" style="height: 25px;">
+    
+</div>
+
+</div>{% if people is not empty %}
+    {% for person in people %}
+        {% include 'pages/_contact-layout.html.twig' with {values: {name: '', email: '', phone: '', subject: '', message: ''}} %}
+    {% endfor %}
+{% else %}
+<div class="content-block n content-grid ">    <div class="content-column" style="width: 37%;">
+        <div><div class="content-block n image-block "><figure class="image-frame image-center">
+<img sizes="(min-width: 271px) 271px, 100vw" src="/media/i348db21cc8acb07e.jpg" alt="" class="" loading="lazy">    
+
+</figure>
+
+<div class="clear"></div>
+</div><div class="content-block n formatted-text "><p style="text-align: center;">
+    <span style="color: #00a1d6;"><strong>Schatzmeister</strong></span>
+</p>
+
+<p style="text-align: center;">
+    <span style="color: #00a1d6;"><strong>Leiter Event- und Techniksparte</strong></span>
+</p>
+
+<p style="text-align: center;">
+    <strong>Uwe Jonas</strong>
+</p>
+
+<p style="text-align: center;">
+     
+</p>
+
+<p style="text-align: center;">
+    <strong><a href="mailto:jonas@kutawerk.de" class="__cf_email__" data-cfemail="58323736392b18332d2c392f3d2a33763c3d">jonas@kutawerk.de</a></strong>
+</p></div></div>    </div>
+            
+        <div class="content-column last" style="width: 61%;">
+        <div><div class="content-block n j-formnew ">
+<p><a class="action-link" href="mailto:jonas@kutawerk.de">E-Mail schreiben</a></p>
+</div></div>    </div>
+    
+
+<br class="clear">
+
+</div>
+{% endif %}<div class="content-block n content-spacing-block ">
+    <div class="content-spacing" style="height: 20px;">
+    
+</div>
+
+</div><div class="content-block n content-heading "><h2 class="">Spenden</h2></div><div class="content-block n formatted-text "><div>
+    <b>Bankverbindung der Kultur-/Techniksparte</b>
+</div>
+
+<div>
+    Ostsächsische Sparkasse Dresden 
+</div>
+
+<div>
+    IBAN DE49 8505 0300 3000 3353 22
+</div>
+
+<div>
+    BIG OSDDDE81XXX
+</div>
+
+<div>
+    <br>
+</div>
+
+<div>
+    <div>
+        <i><b>Kultur- und Tanzwerkstatt e.V.</b></i>
+    </div>
+
+    <div>
+        Finanzamt Freital 
+    </div>
+
+    <div>
+        Steuernummer 206/141/03230
+    </div>
+</div></div></div>
+
+</div>
+{% endblock %}

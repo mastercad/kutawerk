@@ -1,0 +1,92 @@
+name: "Deploy Application"
+
+# GitHub Secrets:
+# DEPLOY_SSH_HOST, DEPLOY_SSH_USER, DEPLOY_SSH_KEY, DEPLOY_SSH_PORT
+# DEPLOY_PATH, APP_SECRET, MYSQL_PASSWORD, MYSQL_ROOT_PASSWORD
+# MAILER_DSN, GHCR_TOKEN
+
+on:
+  workflow_run:
+    workflows: ["Build & Push Docker Images"]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      image_tag:
+        description: "Docker Image-Tag"
+        required: false
+        default: "latest"
+
+jobs:
+  deploy:
+    name: "Deploy kutawerk.byte-artist.de"
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1
+        env:
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+          APP_SECRET: ${{ secrets.APP_SECRET }}
+          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+          MAILER_DSN: ${{ secrets.MAILER_DSN }}
+          IMAGE_TAG: ${{ inputs.image_tag || 'latest' }}
+          GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
+          GHCR_USER: ${{ github.actor }}
+          REPO_OWNER: ${{ github.repository_owner }}
+          REPO: ${{ github.repository }}
+        with:
+          host: ${{ secrets.DEPLOY_SSH_HOST }}
+          username: ${{ secrets.DEPLOY_SSH_USER }}
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          port: ${{ secrets.DEPLOY_SSH_PORT || 22 }}
+          envs: DEPLOY_PATH,APP_SECRET,MYSQL_PASSWORD,MYSQL_ROOT_PASSWORD,MAILER_DSN,IMAGE_TAG,GHCR_TOKEN,GHCR_USER,REPO_OWNER,REPO
+          script: |
+            set -euo pipefail
+            mkdir -p "${DEPLOY_PATH}"
+            if [ ! -d "${DEPLOY_PATH}/.git" ]; then
+              git clone "https://github.com/${REPO}.git" "${DEPLOY_PATH}"
+            fi
+            cd "${DEPLOY_PATH}"
+            git fetch origin main
+            git checkout main
+            git pull --ff-only origin main
+
+            umask 077
+            {
+              printf 'APP_ENV=prod\n'
+              printf 'APP_SECRET=%s\n' "${APP_SECRET}"
+              printf 'MYSQL_PASSWORD=%s\n' "${MYSQL_PASSWORD}"
+              printf 'MYSQL_ROOT_PASSWORD=%s\n' "${MYSQL_ROOT_PASSWORD}"
+              printf 'MAILER_DSN=%s\n' "${MAILER_DSN:-null://null}"
+              printf 'MAILER_FROM=info@kutawerk.de\n'
+              printf 'KUTAWERK_DEFAULT_URI=https://kutawerk.byte-artist.de\n'
+              printf 'PHP_IMAGE=ghcr.io/%s/kutawerk-php\n' "${REPO_OWNER}"
+              printf 'WEB_IMAGE=ghcr.io/%s/kutawerk-web\n' "${REPO_OWNER}"
+              printf 'IMAGE_TAG=%s\n' "${IMAGE_TAG}"
+              printf 'HTTP_BIND=127.0.0.1\n'
+              printf 'HTTP_PORT=8098\n'
+            } > .env.docker
+
+            printf '%s' "${GHCR_TOKEN}" | docker login ghcr.io -u "${GHCR_USER}" --password-stdin
+            COMPOSE='docker compose -f docker-compose.prod.yml --env-file .env.docker'
+            ${COMPOSE} pull
+            ${COMPOSE} up -d database
+            ${COMPOSE} run --rm migrations
+            ${COMPOSE} up -d --remove-orphans php web
+
+            for i in $(seq 1 12); do
+              STATUS=$(docker inspect --format='{{.State.Health.Status}}' kutawerk_web 2>/dev/null || echo starting)
+              if [ "${STATUS}" = healthy ]; then
+                break
+              fi
+              if [ "${i}" = 12 ]; then
+                ${COMPOSE} logs --tail=100 php web
+                exit 1
+              fi
+              sleep 5
+            done
+
+            curl --fail --silent --show-error --header 'Host: kutawerk.byte-artist.de' http://127.0.0.1:8098/ >/dev/null
+            docker image prune -f

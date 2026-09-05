@@ -1,0 +1,23 @@
+.trainer-page { width: 100%; padding: 48px 0 70px; }
+.trainer-page-heading h1 { margin-bottom: 0; font-size: 40px; letter-spacing: -.025em; }
+.trainer-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 64px 54px; margin-top: 44px; }
+.trainer-card { display: flex; min-width: 0; flex-direction: column; align-items: stretch; padding: 0; border: 0; border-radius: 0; background: transparent; }
+.trainer-portrait { display: block; width: 250px; height: 250px; max-width: 100%; margin: 0 auto 28px; border-radius: 50%; object-fit: cover; filter: grayscale(1); }
+.trainer-card-content { min-width: 0; text-align: center; }
+.trainer-card h2 { margin: 0 0 12px; color: #3e3e3e; font-size: 28px; font-weight: 700; letter-spacing: -.025em; line-height: 1.15; text-align: center; }
+.trainer-card .trainer-courses,.trainer-card .trainer-specialty { margin: 2px 0; color: #4d4e4d; font-size: 17px; font-weight: 700; line-height: 1.4; text-align: center; }
+.trainer-card .trainer-specialty-primary { color: var(--blue); }
+.trainer-card a.trainer-specialty { display: block; text-decoration: none; }
+.trainer-card a.trainer-specialty:hover,.trainer-card a.trainer-specialty:focus { text-decoration: underline; }
+.trainer-details { margin-top: 18px; border-top: 1px solid #d8d8d8; text-align: left; }
+.trainer-details summary { position: relative; padding: 12px 24px 12px 0; color: var(--blue); font-size: 15px; font-weight: 700; list-style: none; }
+.trainer-details summary::-webkit-details-marker { display: none; }
+.trainer-details summary::after { position: absolute; top: 11px; right: 2px; content: '+'; font-size: 20px; font-weight: 400; line-height: 1; }
+.trainer-details[open] summary::after { content: '−'; }
+.trainer-details summary:hover,.trainer-details summary:focus { color: #4d4e4d; }
+.trainer-bio { padding: 4px 0 2px; color: #4d4e4d; font-size: 16px; line-height: 1.65; text-align: left; }
+.trainer-card .trainer-bio p { margin: 0 0 17px; text-align: left; }
+.trainer-card .trainer-bio ul { margin: -5px 0 17px; padding-left: 22px; text-align: left; }
+.trainer-card .trainer-bio li { margin-bottom: 3px; }
+@media(max-width:900px){.trainer-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:56px 42px}}
+@media(max-width:600px){.trainer-page{padding:40px 6px 55px}.trainer-page-heading h1{font-size:36px}.trainer-grid{grid-template-columns:minmax(0,1fr);gap:48px;margin-top:38px}.trainer-card{padding-bottom:2px}.trainer-card:not(:last-child){border-bottom:1px solid #e1e1e1;padding-bottom:42px}.trainer-portrait{width:min(250px,calc(100vw - 70px));height:min(250px,calc(100vw - 70px));margin-bottom:25px}.trainer-card h2{font-size:29px}.trainer-card .trainer-courses,.trainer-card .trainer-specialty{font-size:17px}.trainer-details{width:100%;margin-top:20px}.trainer-details summary{font-size:16px}.trainer-bio{font-size:16px;line-height:1.7}}
