@@ -23,6 +23,20 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
     steps:
+      - name: Checkout deployment files
+        uses: actions/checkout@v4
+
+      - name: Copy deployment files
+        uses: appleboy/scp-action@v1
+        with:
+          host: ${{ secrets.DEPLOY_SSH_HOST }}
+          username: ${{ secrets.DEPLOY_SSH_USER }}
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          port: ${{ secrets.DEPLOY_SSH_PORT || 22 }}
+          source: docker-compose.prod.yml
+          target: ${{ secrets.DEPLOY_PATH }}
+          overwrite: true
+
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1
         env:
@@ -35,23 +49,15 @@ jobs:
           GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
           GHCR_USER: ${{ github.actor }}
           REPO_OWNER: ${{ github.repository_owner }}
-          REPO: ${{ github.repository }}
         with:
           host: ${{ secrets.DEPLOY_SSH_HOST }}
           username: ${{ secrets.DEPLOY_SSH_USER }}
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           port: ${{ secrets.DEPLOY_SSH_PORT || 22 }}
-          envs: DEPLOY_PATH,APP_SECRET,MYSQL_PASSWORD,MYSQL_ROOT_PASSWORD,MAILER_DSN,IMAGE_TAG,GHCR_TOKEN,GHCR_USER,REPO_OWNER,REPO
+          envs: DEPLOY_PATH,APP_SECRET,MYSQL_PASSWORD,MYSQL_ROOT_PASSWORD,MAILER_DSN,IMAGE_TAG,GHCR_TOKEN,GHCR_USER,REPO_OWNER
           script: |
             set -euo pipefail
-            mkdir -p "${DEPLOY_PATH}"
-            if [ ! -d "${DEPLOY_PATH}/.git" ]; then
-              git clone "https://github.com/${REPO}.git" "${DEPLOY_PATH}"
-            fi
             cd "${DEPLOY_PATH}"
-            git fetch origin master
-            git checkout master
-            git pull --ff-only origin master
 
             umask 077
             {

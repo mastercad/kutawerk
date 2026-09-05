@@ -1,8 +1,8 @@
 # Deployment für kutawerk.byte-artist.de
 
-Das Deployment folgt dem Aufbau der Byte-Artist-Projektseite: GitHub Actions
-prüft die Anwendung, veröffentlicht PHP- und Web-Images in GHCR und aktualisiert
-den privaten Server anschließend per SSH.
+GitHub Actions prüft die Anwendung, veröffentlicht PHP- und Web-Images in GHCR,
+kopiert die benötigte Compose-Datei auf den privaten Server und aktualisiert dort
+die Container. Auf dem Server wird kein Git-Repository angelegt.
 
 ## GitHub-Secrets
 
