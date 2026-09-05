@@ -76,10 +76,35 @@ jobs:
             } > .env.docker
 
             printf '%s' "${GHCR_TOKEN}" | docker login ghcr.io -u "${GHCR_USER}" --password-stdin
+
+            if docker container inspect kutawerk_database >/dev/null 2>&1; then
+              EXISTING_COMPOSE_PROJECT=$(docker container inspect --format='{{ index .Config.Labels "com.docker.compose.project" }}' kutawerk_database)
+              if [ -n "${EXISTING_COMPOSE_PROJECT}" ]; then
+                export COMPOSE_PROJECT_NAME="${EXISTING_COMPOSE_PROJECT}"
+              fi
+              docker start kutawerk_database >/dev/null
+            fi
+
             COMPOSE='docker compose -f docker-compose.prod.yml --env-file .env.docker'
             ${COMPOSE} pull
-            ${COMPOSE} up -d database
-            ${COMPOSE} run --rm migrations
+
+            if ! docker container inspect kutawerk_database >/dev/null 2>&1; then
+              ${COMPOSE} up -d database
+            fi
+
+            for i in $(seq 1 20); do
+              DB_STATUS=$(docker inspect --format='{{.State.Health.Status}}' kutawerk_database 2>/dev/null || echo starting)
+              if [ "${DB_STATUS}" = healthy ]; then
+                break
+              fi
+              if [ "${i}" = 20 ]; then
+                docker logs --tail=100 kutawerk_database
+                exit 1
+              fi
+              sleep 5
+            done
+
+            ${COMPOSE} run --rm --no-deps migrations
             ${COMPOSE} up -d --remove-orphans php web
 
             for i in $(seq 1 12); do
