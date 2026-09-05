@@ -19,7 +19,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 final class EditorController extends AbstractController
 {
     #[Route('',name:'dashboard',methods:['GET'])]
-    public function dashboard(UserRepository $users,CourseRepository $courses,LocationRepository $locations,TrainingSessionRepository $sessions):Response{return $this->render('editor/dashboard.html.twig',['userCount'=>$users->count(['active'=>true]),'courseCount'=>$courses->count(['active'=>true]),'locationCount'=>$locations->count(['active'=>true]),'sessionCount'=>$sessions->count(['active'=>true])]);}
+    public function dashboard(UserRepository $users,CourseRepository $courses,LocationRepository $locations,TrainingSessionRepository $sessions):Response{return $this->render('editor/dashboard.html.twig',['activeAccountCount'=>$users->countActiveAccounts(),'courseCount'=>$courses->count(['active'=>true]),'locationCount'=>$locations->count(['active'=>true]),'sessionCount'=>$sessions->count(['active'=>true])]);}
 
     #[Route('/users',name:'users',methods:['GET','POST'])]
     #[IsGranted('ROLE_ADMIN')]
