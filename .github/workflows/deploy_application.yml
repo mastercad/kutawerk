@@ -2,7 +2,7 @@ name: "Deploy Application"
 
 # GitHub Secrets:
 # DEPLOY_SSH_HOST, DEPLOY_SSH_USER, DEPLOY_SSH_KEY, DEPLOY_SSH_PORT
-# APP_SECRET, MYSQL_PASSWORD, MYSQL_ROOT_PASSWORD
+# DEPLOY_PATH, APP_SECRET, MYSQL_PASSWORD, MYSQL_ROOT_PASSWORD
 # MAILER_DSN, GHCR_TOKEN
 
 on:
@@ -34,13 +34,13 @@ jobs:
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           port: ${{ secrets.DEPLOY_SSH_PORT || 22 }}
           source: docker-compose.prod.yml
-          target: /tmp/kutawerk-deploy-${{ github.run_id }}
+          target: ${{ secrets.DEPLOY_PATH }}
           overwrite: true
 
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1
         env:
-          DEPLOY_PATH: /tmp/kutawerk-deploy-${{ github.run_id }}
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
           APP_SECRET: ${{ secrets.APP_SECRET }}
           MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
           MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
@@ -57,7 +57,6 @@ jobs:
           envs: DEPLOY_PATH,APP_SECRET,MYSQL_PASSWORD,MYSQL_ROOT_PASSWORD,MAILER_DSN,IMAGE_TAG,GHCR_TOKEN,GHCR_USER,REPO_OWNER
           script: |
             set -euo pipefail
-            trap 'rm -rf "${DEPLOY_PATH}"' EXIT
             cd "${DEPLOY_PATH}"
 
             umask 077
@@ -77,7 +76,7 @@ jobs:
             } > .env.docker
 
             printf '%s' "${GHCR_TOKEN}" | docker login ghcr.io -u "${GHCR_USER}" --password-stdin
-            COMPOSE='docker compose --project-name kutawerk -f docker-compose.prod.yml --env-file .env.docker'
+            COMPOSE='docker compose -f docker-compose.prod.yml --env-file .env.docker'
             ${COMPOSE} pull
             ${COMPOSE} up -d database
             ${COMPOSE} run --rm migrations
