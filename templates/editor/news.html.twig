@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 {% block stylesheets %}<link rel="stylesheet" href="{{ asset('styles/admin.css') }}?v=20260904-5">{% endblock %}
-{% block javascripts %}<script src="{{ asset('scripts/admin.js') }}?v=20260905-11" defer></script><script src="{{ asset('scripts/gallery-editor.js') }}?v=20260905-12" defer></script>{% endblock %}
+{% block javascripts %}<script src="{{ asset('scripts/admin.js') }}?v=20260905-13" defer></script><script src="{{ asset('scripts/gallery-editor.js') }}?v=20260905-17" defer></script>{% endblock %}
 {% block body %}<section class="admin-shell">{% include 'editor/_nav.html.twig' %}<main class="admin-content">
 <header class="admin-page-header"><div><span class="eyebrow">Inhalte</span><h1>Neuigkeiten</h1><p>Beiträge schreiben, Bilder verwalten und kontrolliert veröffentlichen.</p></div><button class="button editor-create" data-create-title="Neue Neuigkeit erstellen">Neue Neuigkeit</button></header>
 {% for message in app.flashes('success') %}<p class="success" data-success-message>{{ message }}</p>{% endfor %}{% for message in app.flashes('error') %}<p class="alert">{{ message }}</p>{% endfor %}

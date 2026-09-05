@@ -31,6 +31,24 @@ function insertEditorBlock(editor, html) {
     editor.insertAdjacentHTML('beforeend',html);
 }
 
+function inlineImageHtml(index, file) {
+    return `<figure class="inline-image-editor" data-inline-image="${index}" contenteditable="false"><img src="${URL.createObjectURL(file)}" alt="" draggable="false"><span class="inline-image-grip" role="button" tabindex="0" aria-label="Bild verschieben">⠿</span><button type="button" data-inline-image-remove aria-label="Bild entfernen">×</button></figure><p><br></p>`;
+}
+
+function addInlineImages(form, selected, before = undefined) {
+    const editor=form.querySelector('[data-rich-editor]'),input=form.querySelector('[data-inline-image-input]');
+    const files=inlineImageFiles.get(form)||[],start=files.length;
+    files.push(...selected);inlineImageFiles.set(form,files);
+    const transfer=new DataTransfer();files.forEach((file)=>transfer.items.add(file));input.files=transfer.files;
+    selected.forEach((file,offset)=>{
+        const html=inlineImageHtml(start+offset,file);
+        if(before===null)editor.insertAdjacentHTML('beforeend',html);
+        else if(before)before.insertAdjacentHTML('beforebegin',html);
+        else insertGalleryBlock(editor,html);
+    });
+    form.dispatchEvent(new Event('input',{bubbles:true}));
+}
+
 function insertGalleryBlock(editor, html) {
     const range=galleryInsertionRanges.get(editor);
     if(range&&editor.contains(range.commonAncestorContainer)){
@@ -147,7 +165,7 @@ document.addEventListener('change',(event)=>{
     const replacement=event.target.closest('input[type="file"][name^="gallery_replace["]');
     if(replacement){const file=replacement.files?.[0],panel=replacement.closest('[data-gallery-detail-panel]');if(file&&panel)panel.querySelector('.gallery-caption-body>img').src=URL.createObjectURL(file);return;}
     const inlineInput=event.target.closest('[data-inline-image-input]');
-    if(inlineInput){const form=inlineInput.closest('form'),editor=form.querySelector('[data-rich-editor]'),files=inlineImageFiles.get(form)||[],selected=Array.from(inlineInput.files||[]),start=files.length;files.push(...selected);inlineImageFiles.set(form,files);const transfer=new DataTransfer();files.forEach((file)=>transfer.items.add(file));inlineInput.files=transfer.files;selected.forEach((file,offset)=>insertEditorBlock(editor,`<figure class="inline-image-editor" data-inline-image="${start+offset}" contenteditable="false"><img src="${URL.createObjectURL(file)}" alt=""><button type="button" data-inline-image-remove aria-label="Bild entfernen">×</button></figure><p><br></p>`));return;}
+    if(inlineInput){addInlineImages(inlineInput.closest('form'),Array.from(inlineInput.files||[]));return;}
     const input=event.target.closest('input[type="file"][name^="gallery_images["]'); if(!input)return;
     const manager=input.closest('[data-gallery-manager]'),key=manager.dataset.galleryManager,list=manager.querySelector('[data-gallery-editor]');
     list.querySelectorAll('.gallery-new-item').forEach((item)=>item.remove());
@@ -162,11 +180,11 @@ document.addEventListener('dragstart',(event)=>{
     const item=event.target.closest('[data-gallery-item]');if(item){draggedImage=item;item.classList.add('dragging');event.dataTransfer.effectAllowed='move';}
 });
 document.addEventListener('pointerdown',(event)=>{
-    const grip=event.target.closest('.gallery-block-grip');
+    const grip=event.target.closest('.gallery-block-grip,.inline-image-grip');
     if(!grip)return;
     event.preventDefault();
-    draggedGallery=grip.closest('[data-gallery-marker]');
-    draggedGallery.classList.add('dragging-gallery');
+    draggedGallery=grip.closest('[data-gallery-marker],[data-inline-image]');
+    draggedGallery.classList.add(draggedGallery.matches('[data-gallery-marker]')?'dragging-gallery':'dragging-inline-image');
     grip.setPointerCapture?.(event.pointerId);
 });
 document.addEventListener('pointermove',(event)=>{
@@ -188,11 +206,17 @@ document.addEventListener('pointermove',(event)=>{
 document.addEventListener('pointerup',()=>{
     if(!draggedGallery)return;
     const form=draggedGallery.closest('form');
-    draggedGallery.classList.remove('dragging-gallery');
+    draggedGallery.classList.remove('dragging-gallery','dragging-inline-image');
     draggedGallery=null;
     form?.dispatchEvent(new Event('input',{bubbles:true}));
 });
 document.addEventListener('dragover',(event)=>{
+    const fileDropEditor=event.target.closest('[data-rich-editor]');
+    if(fileDropEditor&&!event.target.closest('[data-file-drop]')&&Array.from(event.dataTransfer?.types||[]).includes('Files')){
+        event.preventDefault();
+        event.dataTransfer.dropEffect='copy';
+        return;
+    }
     if(draggedImage){
         const list=event.target.closest('[data-gallery-editor]');
         if(!list||list!==draggedImage.parentElement)return;
@@ -209,6 +233,18 @@ document.addEventListener('dragover',(event)=>{
     const blocks=[...editor.children].filter((child)=>child!==draggedGallery);
     const before=blocks.find((block)=>event.clientY<block.getBoundingClientRect().top+block.getBoundingClientRect().height/2);
     editor.insertBefore(draggedGallery,before||null);
+});
+document.addEventListener('drop',(event)=>{
+    const editor=event.target.closest('[data-rich-editor]');
+    if(!editor||event.target.closest('[data-file-drop]'))return;
+    const files=Array.from(event.dataTransfer?.files||[]).filter((file)=>['image/jpeg','image/png','image/webp'].includes(file.type));
+    if(!files.length)return;
+    event.preventDefault();
+    event.stopPropagation();
+    let block=event.target;
+    while(block&&block.parentElement!==editor)block=block.parentElement;
+    if(block&&event.clientY>block.getBoundingClientRect().top+block.getBoundingClientRect().height/2)block=block.nextElementSibling;
+    addInlineImages(editor.closest('form'),files,block||null);
 });
 document.addEventListener('dragend',()=>{draggedGallery?.classList.remove('dragging-gallery');draggedImage?.classList.remove('dragging');if(draggedImage)updateGalleries(draggedImage.closest('form'));draggedGallery=null;draggedImage=null;});
 
